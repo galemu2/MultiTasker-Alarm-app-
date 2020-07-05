@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/fragment1ScheduleList">
+
+    <fragment
+        android:id="@+id/fragment1ScheduleList"
+        android:name="com.ctrlaccess.multitasker.Fragment1ScheduleList"
+        android:label="fragment_schedule_list"
+        tools:layout="@layout/fragment1_schedule_list" >
+        <action
+            android:id="@+id/action_fragmentScheduleList_to_fragmentAlarmList"
+            app:destination="@id/fragment2AlarmList" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment2AlarmList"
+        android:name="com.ctrlaccess.multitasker.Fragment2AlarmList"
+        android:label="@string/fragment2_alarm_list"
+        tools:layout="@layout/fragment2_alarm_list">
+        <argument
+            android:name="listTitle"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/alert1CreateAlarmList"
+        android:name="com.ctrlaccess.multitasker.Alert1CreateAlarmList"
+        android:label="Alert1CreateAlarmList" />
+    <fragment
+        android:id="@+id/alert2CreateAlarms"
+        android:label="alert2CreateAlarms" />
+</navigation>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Multitasker</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button">Button</string>
+
+    <string name="create">Create</string>
+    <string name="cancel_create">Cancel</string>
+    <string name="alert1_title">Alert 1</string>
+    <string name="fragment2_alarm_list">Alarm List</string>
+    <string name="note_optional">note (optional)</string>
+</resources>
