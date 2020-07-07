@@ -7,11 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
+import java.sql.Time
+import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -19,6 +24,11 @@ import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
  * create an instance of this fragment.
  */
 class Fragment2AlarmList : Fragment() {
+
+    lateinit var recyclerViewAlarmElements: RecyclerView
+    lateinit var recyclerView1AlramListAdaptor: RecyclerView1AlramListAdaptor
+    private var alarms = arrayListOf<AlarmElement>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +46,11 @@ class Fragment2AlarmList : Fragment() {
             createAlertDialog2()
         }
 
+        recyclerViewAlarmElements = binding.recyclerViewAlarms
+        recyclerView1AlramListAdaptor = RecyclerView1AlramListAdaptor(requireContext())
+        recyclerViewAlarmElements.adapter = recyclerView1AlramListAdaptor
+        recyclerViewAlarmElements.layoutManager = LinearLayoutManager(requireContext())
+
         return binding.root
     }
 
@@ -46,20 +61,11 @@ class Fragment2AlarmList : Fragment() {
             AlertDialog.Builder(it)
         }
 
-
         builder?.setPositiveButton(R.string.create) { dialog, which ->
-            var hr: Int?
-            var min: Int?
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                hr = bindingAlert.timePicker.hour
-                min = bindingAlert.timePicker.minute
-            } else {
-                hr = bindingAlert.timePicker.currentHour
-                min = bindingAlert.timePicker.currentMinute
-            }
-
-            Toast.makeText(context, "Tiem: " + hr + ":" + min, Toast.LENGTH_SHORT).show()
+            val time: String = getTime(bindingAlert.timePicker)
+            alarms.add(AlarmElement(time, null))
+            recyclerView1AlramListAdaptor.setAlarms(alarms)
         }
 
         builder?.setNegativeButton(R.string.cancel_create) { dialog, which ->
@@ -75,4 +81,22 @@ class Fragment2AlarmList : Fragment() {
         )
     }
 
+    private fun getTime(timePicker: TimePicker): String {
+
+        var hr: Int?
+        var min: Int?
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hr = timePicker.hour
+            min = timePicker.minute
+        } else {
+            hr = timePicker.currentHour
+            min = timePicker.currentMinute
+        }
+
+        val time: Time = Time(hr, min, 0)
+        val formatter: SimpleDateFormat = SimpleDateFormat("hh:mm a")
+
+        return formatter.format(time)
+    }
 }

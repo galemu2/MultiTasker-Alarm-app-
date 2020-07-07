@@ -9,4 +9,6 @@
     <string name="alert1_title">Alert 1</string>
     <string name="fragment2_alarm_list">Alarm List</string>
     <string name="note_optional">note (optional)</string>
+    <string name="short_note">short note (optional)</string>
+    <string name="alarm_element">alarm element</string>
 </resources>
