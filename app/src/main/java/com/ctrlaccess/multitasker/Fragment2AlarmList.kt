@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
@@ -40,7 +38,8 @@ class Fragment2AlarmList : Fragment() {
         )
         // use title from alert dialog, when creating new list
         val args = Fragment2AlarmListArgs.fromBundle(requireArguments())
-        (activity as ToolbarTitleChangeListener).updateTitel(args.listTitle)
+        (activity as ToolbarTitleChangeListener).updateTitle(args.listTitle, args.listSubTitle)
+
 
         binding.fab2Alarms.setOnClickListener { v: View ->
             createAlertDialog2()

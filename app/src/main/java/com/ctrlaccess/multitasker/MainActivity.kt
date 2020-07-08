@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
 
 interface ToolbarTitleChangeListener {
-    fun updateTitel(title: String)
+    fun updateTitle(title: String, subTitle: String?)
 }
 
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
@@ -20,10 +20,12 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 //        setContentView(R.layout.activity_main)
 
+
     }
 
-    override fun updateTitel(newTitle: String) {
+    override fun updateTitle(newTitle: String, newSubTitle: String?) {
         binding.toolbar.title = newTitle
+        binding.toolbar.subtitle = newSubTitle ?: ""
     }
 
 }

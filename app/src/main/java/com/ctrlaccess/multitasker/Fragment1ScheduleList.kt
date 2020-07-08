@@ -30,7 +30,7 @@ open class Fragment1ScheduleList : Fragment() {
             inflater, R.layout.fragment1_schedule_list,
             container, false
         )
-        (activity as ToolbarTitleChangeListener).updateTitel("My custom Title")
+        (activity as ToolbarTitleChangeListener).updateTitle(getString(R.string.app_name), null)
         binding.fab1List.setOnClickListener {
 
             createAlertDialog1()
@@ -55,7 +55,10 @@ open class Fragment1ScheduleList : Fragment() {
         ) { dialog, which ->
             //check for title
             if (bindingAlert.editTextText1Title.text.toString().length > 1) {
-                startNavigation(bindingAlert.editTextText1Title.text.toString())
+                startNavigation(
+                    bindingAlert.editTextText1Title.text.toString(),
+                    bindingAlert.editTextText1Note.text.toString()
+                )
             } else
                 Toast.makeText(context, "Title required.", Toast.LENGTH_SHORT).show()
         }
@@ -76,11 +79,11 @@ open class Fragment1ScheduleList : Fragment() {
     }
 
     //navigate from fragment1 to fragment2
-    private fun startNavigation(listTitle: String) {
+    private fun startNavigation(listTitle: String, listSubTitle: String?) {
         view?.findNavController()
             ?.navigate(
                 Fragment1ScheduleListDirections.actionFragmentScheduleListToFragmentAlarmList(
-                    listTitle
+                    listTitle, listSubTitle
                 )
             )
     }
