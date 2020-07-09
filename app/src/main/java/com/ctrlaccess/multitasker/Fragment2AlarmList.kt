@@ -3,10 +3,8 @@ package com.ctrlaccess.multitasker
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +22,8 @@ import java.text.SimpleDateFormat
 class Fragment2AlarmList : Fragment() {
 
     lateinit var recyclerViewAlarmElements: RecyclerView
-    lateinit var recyclerView1AlramListAdaptor: RecyclerView1AlramListAdaptor
+    lateinit var recyclerView1AlarmListAdaptor: RecyclerView1AlarmListAdaptor
     private var alarms = arrayListOf<AlarmElement>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +43,11 @@ class Fragment2AlarmList : Fragment() {
         }
 
         recyclerViewAlarmElements = binding.recyclerViewAlarms
-        recyclerView1AlramListAdaptor = RecyclerView1AlramListAdaptor(requireContext())
-        recyclerViewAlarmElements.adapter = recyclerView1AlramListAdaptor
+        recyclerView1AlarmListAdaptor = RecyclerView1AlarmListAdaptor(requireContext())
+        recyclerViewAlarmElements.adapter = recyclerView1AlarmListAdaptor
         recyclerViewAlarmElements.layoutManager = LinearLayoutManager(requireContext())
+
+        (activity as ToolbarTitleChangeListener).showMenu()
 
         return binding.root
     }
@@ -64,7 +63,7 @@ class Fragment2AlarmList : Fragment() {
 
             val time: String = getTime(bindingAlert.timePicker)
             alarms.add(AlarmElement(time, null))
-            recyclerView1AlramListAdaptor.setAlarms(alarms)
+            recyclerView1AlarmListAdaptor.setAlarms(alarms)
         }
 
         builder?.setNegativeButton(R.string.cancel_create) { dialog, which ->
@@ -98,4 +97,6 @@ class Fragment2AlarmList : Fragment() {
 
         return formatter.format(time)
     }
+
+
 }

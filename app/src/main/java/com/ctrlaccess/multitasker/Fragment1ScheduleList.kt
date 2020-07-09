@@ -30,11 +30,10 @@ open class Fragment1ScheduleList : Fragment() {
             inflater, R.layout.fragment1_schedule_list,
             container, false
         )
-        (activity as ToolbarTitleChangeListener).updateTitle(getString(R.string.app_name), null)
+        (activity as ToolbarTitleChangeListener).hideMenu()
+
         binding.fab1List.setOnClickListener {
-
             createAlertDialog1()
-
         }
 
         return binding.root

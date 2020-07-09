@@ -18,4 +18,5 @@
     <string name="saturday">S</string>
     <string name="tuesday">T</string>
     <string name="wednesday">W</string>
+    <string name="save_button">save</string>
 </resources>

@@ -8,8 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerView1AlramListAdaptor(context: Context) :
-    RecyclerView.Adapter<RecyclerView1AlramListAdaptor.MyViewHolder>() {
+class RecyclerView1AlarmListAdaptor(context: Context) :
+    RecyclerView.Adapter<RecyclerView1AlarmListAdaptor.MyViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<AlarmElement>()
@@ -17,7 +17,7 @@ class RecyclerView1AlramListAdaptor(context: Context) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerView1AlramListAdaptor.MyViewHolder {
+    ): RecyclerView1AlarmListAdaptor.MyViewHolder {
         val view = inflater.inflate(R.layout.element1_alarm, parent, false)
         return MyViewHolder(view)
     }
@@ -27,7 +27,7 @@ class RecyclerView1AlramListAdaptor(context: Context) :
     }
 
     override fun onBindViewHolder(
-        holder: RecyclerView1AlramListAdaptor.MyViewHolder,
+        holder: RecyclerView1AlarmListAdaptor.MyViewHolder,
         position: Int
     ) {
         val currentAlarm = alarms[position]
