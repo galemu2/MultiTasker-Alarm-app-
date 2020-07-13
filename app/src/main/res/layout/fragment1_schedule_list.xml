@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#2196F3"
-        tools:context=".Fragment1ScheduleList">
+        tools:context=".Fragment1Schedules">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1_list"

@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/fragment1ScheduleList">
+    app:startDestination="@id/fragment1Schedules">
 
     <fragment
-        android:id="@+id/fragment1ScheduleList"
-        android:name="com.ctrlaccess.multitasker.Fragment1ScheduleList"
-        android:label="fragment_schedule_list"
-        tools:layout="@layout/fragment1_schedule_list" >
+        android:id="@+id/fragment1Schedules"
+        android:name="com.ctrlaccess.multitasker.Fragment1Schedules"
+        android:label="fragment_schedules"
+        tools:layout="@layout/fragment1_schedule_list">
         <action
             android:id="@+id/action_fragmentScheduleList_to_fragmentAlarmList"
-            app:destination="@id/fragment2AlarmList" />
+            app:destination="@id/fragment2Alarms" />
     </fragment>
     <fragment
-        android:id="@+id/fragment2AlarmList"
-        android:name="com.ctrlaccess.multitasker.Fragment2AlarmList"
+        android:id="@+id/fragment2Alarms"
+        android:name="com.ctrlaccess.multitasker.Fragment2Alarms"
         android:label="@string/fragment2_alarm_list"
         tools:layout="@layout/fragment2_alarm_list">
         <argument

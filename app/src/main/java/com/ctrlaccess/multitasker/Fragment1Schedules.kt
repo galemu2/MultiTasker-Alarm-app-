@@ -14,10 +14,10 @@ import com.ctrlaccess.multitasker.databinding.Fragment1ScheduleListBinding
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Fragment1ScheduleList.newInstance] factory method to
+ * Use the [Fragment1Schedules.newInstance] factory method to
  * create an instance of this fragment.
  */
-open class Fragment1ScheduleList : Fragment() {
+open class Fragment1Schedules : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,8 +81,9 @@ open class Fragment1ScheduleList : Fragment() {
     private fun startNavigation(listTitle: String, listSubTitle: String?) {
         view?.findNavController()
             ?.navigate(
-                Fragment1ScheduleListDirections.actionFragmentScheduleListToFragmentAlarmList(
-                    listTitle, listSubTitle
+                Fragment1SchedulesDirections.actionFragmentScheduleListToFragmentAlarmList(
+                    listTitle,
+                    listSubTitle
                 )
             )
     }

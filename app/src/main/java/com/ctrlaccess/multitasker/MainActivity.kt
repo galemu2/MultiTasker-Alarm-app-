@@ -46,12 +46,13 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         val saveButton = binding.toolbar.menu.findItem(R.id.button_save_alarms)
         val isVisible = saveButton.isVisible
         if (isVisible) {
-            saveButton.setVisible(false)
+            saveButton.isVisible = false
         }
+        updateTitle(getString(R.string.app_name), null)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.button_save_alarms -> {
                 Toast.makeText(
                     applicationContext,
@@ -59,10 +60,10 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                     Toast.LENGTH_SHORT
                 )
                     .show()
-                return true
+                true
             }
             else -> {
-                return super.onOptionsItemSelected(item)
+                super.onOptionsItemSelected(item)
             }
         }
 

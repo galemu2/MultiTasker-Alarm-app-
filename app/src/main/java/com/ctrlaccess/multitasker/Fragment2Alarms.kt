@@ -1,7 +1,6 @@
 package com.ctrlaccess.multitasker
 
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -16,13 +15,13 @@ import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Fragment2AlarmList.newInstance] factory method to
+ * Use the [Fragment2Alarms.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Fragment2AlarmList : Fragment() {
+class Fragment2Alarms : Fragment() {
 
     lateinit var recyclerViewAlarmElements: RecyclerView
-    lateinit var recyclerView1AlarmListAdaptor: RecyclerView1AlarmListAdaptor
+    lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
     private var alarms = arrayListOf<AlarmElement>()
 
     override fun onCreateView(
@@ -34,7 +33,7 @@ class Fragment2AlarmList : Fragment() {
             inflater, R.layout.fragment2_alarm_list, container, false
         )
         // use title from alert dialog, when creating new list
-        val args = Fragment2AlarmListArgs.fromBundle(requireArguments())
+        val args = Fragment2AlarmsArgs.fromBundle(requireArguments())
         (activity as ToolbarTitleChangeListener).updateTitle(args.listTitle, args.listSubTitle)
 
 
@@ -43,8 +42,8 @@ class Fragment2AlarmList : Fragment() {
         }
 
         recyclerViewAlarmElements = binding.recyclerViewAlarms
-        recyclerView1AlarmListAdaptor = RecyclerView1AlarmListAdaptor(requireContext())
-        recyclerViewAlarmElements.adapter = recyclerView1AlarmListAdaptor
+        recyclerView1AlarmsAdaptor = RecyclerView1AlarmsAdaptor(requireContext())
+        recyclerViewAlarmElements.adapter = recyclerView1AlarmsAdaptor
         recyclerViewAlarmElements.layoutManager = LinearLayoutManager(requireContext())
 
         (activity as ToolbarTitleChangeListener).showMenu()
@@ -63,7 +62,7 @@ class Fragment2AlarmList : Fragment() {
 
             val time: String = getTime(bindingAlert.timePicker)
             alarms.add(AlarmElement(time, null))
-            recyclerView1AlarmListAdaptor.setAlarms(alarms)
+            recyclerView1AlarmsAdaptor.setAlarms(alarms)
         }
 
         builder?.setNegativeButton(R.string.cancel_create) { dialog, which ->
@@ -81,18 +80,7 @@ class Fragment2AlarmList : Fragment() {
 
     private fun getTime(timePicker: TimePicker): String {
 
-        var hr: Int?
-        var min: Int?
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            hr = timePicker.hour
-            min = timePicker.minute
-        } else {
-            hr = timePicker.currentHour
-            min = timePicker.currentMinute
-        }
-
-        val time: Time = Time(hr, min, 0)
+        val time: Time = Time(timePicker.currentHour, timePicker.currentMinute, 0)
         val formatter: SimpleDateFormat = SimpleDateFormat("hh:mm a")
 
         return formatter.format(time)
