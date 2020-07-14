@@ -6,12 +6,12 @@ import com.ctrlaccess.multitasker.database.entities.Alarm
 
 @Dao
 interface AlarmDao {
-    // query all alarms with a specific scheduleListId
+/*    // query all alarms with a specific scheduleListId
     @Query("SELECT * FROM Alarm WHERE scheduleListId= :scheduleId")
-    fun getAlarms(scheduleId: Long): LiveData<List<Alarm>>
+    fun getAlarms(scheduleId: Long): LiveData<List<Alarm>>*/
 
     // inserting the list of alarms TODO should find a way to add "scheduleListId"
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAlarms(alarms: List<Alarm>)//: List<Long>
 
     // update alarms
@@ -23,6 +23,6 @@ interface AlarmDao {
     fun deleteAlarm(alarm: Alarm)
 
     // delete alarms
-    @Delete
-    fun deleteAlarms(scheduleListId: Long)
+    @Query("Delete from Alarm where scheduleListId=:scheduleListId")
+    suspend fun deleteAlarms(scheduleListId: Long)
 }

@@ -7,7 +7,7 @@ import com.ctrlaccess.multitasker.database.entities.Schedule
 interface ScheduleDao {
 
     // insert the schedule list, will return the id when inserting
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertSchedule(scheduleList: Schedule) //: Long
 
     //update the schedule
@@ -17,4 +17,5 @@ interface ScheduleDao {
     // delete the schedule and all the associated alarms
     @Delete
     fun deleteSchedule(scheduleList: Schedule)
+    // todo all associated alarms should be deleted when deleting a schedule
 }

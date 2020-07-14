@@ -11,7 +11,7 @@ interface MultitaskerDao {
 
     // query the list of alarms for a schedule
     @Transaction
-    @Query("SELECT * FROM Schedule")
+    @Query("select * from Schedule")
     fun getAlarmsInSchedule(): LiveData<List<AlarmsInSchedule>>
 
 }

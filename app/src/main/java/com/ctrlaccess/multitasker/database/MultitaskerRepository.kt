@@ -30,9 +30,9 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
 
 class AlarmsRepository(private val alarmDao: AlarmDao) {
 
-    fun getAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
+/*    fun getAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
         return alarmDao.getAlarms(scheduleListId)
-    }
+    }*/
 
     fun insertAlarms(alarms: List<Alarm>) {
         alarmDao.insertAlarms(alarms)
@@ -46,7 +46,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         alarmDao.deleteAlarm(alarm)
     }
 
-    fun deleteAllAlarms(scheduleListId: Long) {
+    suspend fun deleteAllAlarms(scheduleListId: Long) {
         alarmDao.deleteAlarms(scheduleListId)
     }
 }
