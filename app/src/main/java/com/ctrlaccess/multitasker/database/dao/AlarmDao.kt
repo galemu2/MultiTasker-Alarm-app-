@@ -22,7 +22,7 @@ interface AlarmDao {
     @Delete
     fun deleteAlarm(alarm: Alarm)
 
-    // delete alarms
+    // delete alarms associated with a schedule
     @Query("Delete from Alarm where scheduleListId=:scheduleListId")
     suspend fun deleteAlarms(scheduleListId: Long)
 }

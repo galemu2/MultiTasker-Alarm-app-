@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Schedule(
     @PrimaryKey(autoGenerate = true) val scheduleId: Long,
     val schedule: String,
-    val scheduleNote: String
+    val scheduleNote: String?
 )

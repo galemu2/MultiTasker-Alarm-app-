@@ -8,8 +8,11 @@ import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.database.entities.Alarm
+import com.ctrlaccess.multitasker.database.entities.AlarmTime
 import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
+import kotlinx.android.synthetic.main.alert2_create_alarm_list.*
 import java.sql.Time
 import java.text.SimpleDateFormat
 
@@ -22,7 +25,7 @@ class Fragment2Alarms : Fragment() {
 
     lateinit var recyclerViewAlarmElements: RecyclerView
     lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
-    private var alarms = arrayListOf<AlarmElement>()
+    private var alarms = arrayListOf<Alarm>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +63,13 @@ class Fragment2Alarms : Fragment() {
 
         builder?.setPositiveButton(R.string.create) { dialog, which ->
 
-            val time: String = getTime(bindingAlert.timePicker)
-            alarms.add(AlarmElement(time, null))
+            val alarmTime = AlarmTime(
+                bindingAlert.timePicker.currentHour,
+                bindingAlert.timePicker.currentMinute
+            )
+
+            val alarm = Alarm(time = alarmTime)
+            alarms.add(alarm)
             recyclerView1AlarmsAdaptor.setAlarms(alarms)
         }
 
@@ -76,14 +84,6 @@ class Fragment2Alarms : Fragment() {
         return DataBindingUtil.inflate(
             LayoutInflater.from(context), R.layout.alert2_create_alarm_list, null, false
         )
-    }
-
-    private fun getTime(timePicker: TimePicker): String {
-
-        val time: Time = Time(timePicker.currentHour, timePicker.currentMinute, 0)
-        val formatter: SimpleDateFormat = SimpleDateFormat("hh:mm a")
-
-        return formatter.format(time)
     }
 
 

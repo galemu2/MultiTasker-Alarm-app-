@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
-
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -24,14 +23,18 @@ android {
     }
 
 
-//    buildFeatures {
-//        dataBinding {
-//            enabled = true
-//        }
-//    }
+    buildFeatures {
+        dataBinding {
+            enabled = true
+        }
+    }
+
+    /*
     dataBinding {
         enabled = true
     }
+    */
+    
     buildTypes {
         release {
             minifyEnabled true
@@ -39,18 +42,9 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -80,7 +74,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
 
     // Kotlin components
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 

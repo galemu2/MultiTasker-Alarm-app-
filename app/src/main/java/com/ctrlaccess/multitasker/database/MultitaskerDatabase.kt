@@ -9,9 +9,9 @@ import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.Schedule
 
 @Database(
-    entities = arrayOf(
-        Alarm::class, Schedule::class
-    ), version = 1, exportSchema = false
+    entities = [Alarm::class, Schedule::class],
+    version = 1,
+    exportSchema = false
 )
 abstract class MultitaskerDatabase : RoomDatabase() {
 
