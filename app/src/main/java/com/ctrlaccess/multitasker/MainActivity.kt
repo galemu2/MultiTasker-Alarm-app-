@@ -2,10 +2,13 @@ package com.ctrlaccess.multitasker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.ctrlaccess.multitasker.database.MultitaskerViewModel
+import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
 
 interface ToolbarTitleChangeListener {
@@ -17,15 +20,16 @@ interface ToolbarTitleChangeListener {
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     lateinit var binding: ActivityMainBinding
+    private lateinit var multitaskViewModel: MultitaskerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//        setContentView(R.layout.activity_main)
+        // setContentView(R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
 
+        multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
     }
 
     override fun updateTitle(newTitle: String, newSubTitle: String?) {
@@ -54,19 +58,28 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.button_save_alarms -> {
-                Toast.makeText(
-                    applicationContext,
-                    "save clicked",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+
+                val s = insertAlarms(Fragment2Alarms.alarms)
+
+                Log.d("TAG", "${s.size}")
+
                 true
             }
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
+//        return super.onOptionsItemSelected(item)
+    }
 
+    // add alarm to database
+    fun addAlarm(alarm: Alarm): Long {
+        val id = multitaskViewModel.insertAlarm(alarm)
+        return id
+    }
+
+    private fun insertAlarms(alarms: List<Alarm>): List<Long> {
+        return multitaskViewModel.insertAlarms(alarms)
     }
 
 

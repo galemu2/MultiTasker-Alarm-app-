@@ -1,5 +1,7 @@
 package com.ctrlaccess.multitasker.database
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.ctrlaccess.multitasker.database.dao.AlarmDao
 import com.ctrlaccess.multitasker.database.dao.MultitaskerDao
@@ -30,12 +32,41 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
 
 class AlarmsRepository(private val alarmDao: AlarmDao) {
 
-/*    fun getAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
-        return alarmDao.getAlarms(scheduleListId)
-    }*/
+    /*
+    fun getAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
+            return alarmDao.getAlarms(scheduleListId)
+        }
+    */
+    fun insertAlarm(alarm: Alarm): Long {
+        var res: Long = -1L
 
-    fun insertAlarms(alarms: List<Alarm>) {
-        alarmDao.insertAlarms(alarms)
+//        MultitaskerDatabase.executor.awaitTermination()
+        MultitaskerDatabase.executor.execute {
+            res = alarmDao.insertAlarm(alarm)
+        }
+
+/*        while (res < 0){
+            Log.d("TAG", "res: $res")
+        }*/
+
+        return res
+    }
+
+    fun updateAlarm(alarm: Alarm) {
+        alarmDao.updateAlarm(alarm)
+    }
+
+    fun getScheduleAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
+        return alarmDao.getAlarms(scheduleListId)
+    }
+
+    // insert a list of alarms todo may not be necessary
+    fun insertAlarms(alarms: List<Alarm>): List<Long> {
+        var res = emptyList<Long>()
+        MultitaskerDatabase.executor.execute {
+            res = alarmDao.insertAlarms(alarms)
+        }
+        return res
     }
 
     fun updateAlarm(alarms: List<Alarm>) {

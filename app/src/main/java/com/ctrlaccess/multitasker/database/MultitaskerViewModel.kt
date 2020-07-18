@@ -23,8 +23,19 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
         multitaskerRepository = MultitaskerRepository(multitaskerDao)
     }
 
+    fun insertAlarm(alarms: Alarm): Long {
+        return alarmsRepository.insertAlarm(alarms)
+    }
 
-    fun insertAlarm(alarms: List<Alarm>) {
-        alarmsRepository.insertAlarms(alarms)
+    fun updateAlarm(alarms: Alarm) {
+        alarmsRepository.updateAlarm(alarms)
+    }
+
+    fun deleteAlarm(alarms: Alarm) {
+        alarmsRepository.deleteAlarm(alarms)
+    }
+
+    fun insertAlarms(alarms: List<Alarm>): List<Long> {
+        return alarmsRepository.insertAlarms(alarms)
     }
 }

@@ -8,15 +8,15 @@ import androidx.room.PrimaryKey
 data class Alarm(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    var id: Long = 0L,
 
     @Embedded
-    val time: AlarmTime,
+    var time: AlarmTime,
 
     @Embedded
-    val days: DaysOfWeek? = null,
+    val days: DaysOfWeek  = DaysOfWeek(),
 
-    val alarmNote: String? = null,
+    var alarmNote: String? = null,
 
-    val scheduleListId: Long? = null
+    var scheduleListId: Long? = null
 )

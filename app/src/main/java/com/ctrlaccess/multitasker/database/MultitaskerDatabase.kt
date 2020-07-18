@@ -7,6 +7,9 @@ import com.ctrlaccess.multitasker.database.dao.MultitaskerDao
 import com.ctrlaccess.multitasker.database.dao.ScheduleDao
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.Schedule
+import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 @Database(
     entities = [Alarm::class, Schedule::class],
@@ -20,6 +23,8 @@ abstract class MultitaskerDatabase : RoomDatabase() {
     abstract fun scheduleDao(): ScheduleDao
 
     companion object {
+        private val NUMBER_OF_THREADS = 4
+        val executor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
         @Volatile
         private var INSTANCE: MultitaskerDatabase? = null

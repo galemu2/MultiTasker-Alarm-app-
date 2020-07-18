@@ -1,16 +1,16 @@
 package com.ctrlaccess.multitasker.database.entities
 
 data class DaysOfWeek(
-    val sun: Boolean,
-    val mon: Boolean,
-    val tue: Boolean,
-    val wed: Boolean,
-    val thurs: Boolean,
-    val fri: Boolean,
-    val sat: Boolean
+    var sun: Boolean = false,
+    var mon: Boolean = false,
+    var tue: Boolean = false,
+    var wed: Boolean = false,
+    var thurs: Boolean = false,
+    var fri: Boolean = false,
+    var sat: Boolean = false
 )
 
 data class AlarmTime(
-    val hr: Int,
-    val min: Int
+    var hr: Int,
+    var min: Int
 )

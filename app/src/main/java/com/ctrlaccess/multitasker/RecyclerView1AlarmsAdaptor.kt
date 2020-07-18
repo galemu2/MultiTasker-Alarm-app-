@@ -4,7 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +49,39 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
         val currentAlarm = alarms[position]
         holder.alarmView.text = getTime(currentAlarm)
 
+        holder.checkBoxSunday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.sun = !currentAlarm.days.sun
+        }
+
+        holder.checkBoxMonday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.mon = !currentAlarm.days.mon
+        }
+        holder.checkBoxTuesday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.tue = !currentAlarm.days.tue
+        }
+        holder.checkBoxWednesday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.wed = !currentAlarm.days.wed
+        }
+        holder.checkBoxThursday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.thurs = !currentAlarm.days.thurs
+        }
+        holder.checkBoxFriday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.fri = !currentAlarm.days.fri
+        }
+        holder.checkBoxSaturday.setOnCheckedChangeListener { buttonView, isChecked ->
+            currentAlarm.days.sat = !currentAlarm.days.sat
+        }
+
+
+
+        holder.noteView?.addTextChangedListener {
+            currentAlarm.alarmNote = holder.noteView?.text.toString()
+        }
+
+        val imm = holder.itemView.context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
     }
 
     internal fun setAlarms(alarms: List<Alarm>) {
@@ -54,7 +90,6 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
     }
 
     private fun clickCheckBox(checkBox: CheckBox) {
-        Toast.makeText(checkBox.context, "something", Toast.LENGTH_SHORT).show()
         if (checkBox.isChecked) {
             Toast.makeText(checkBox.context, "clicked: " + checkBox.text, Toast.LENGTH_SHORT).show()
         }

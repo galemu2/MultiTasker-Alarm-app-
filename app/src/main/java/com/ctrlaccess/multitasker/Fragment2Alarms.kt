@@ -3,18 +3,16 @@ package com.ctrlaccess.multitasker
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.widget.TimePicker
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
 import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
-import kotlinx.android.synthetic.main.alert2_create_alarm_list.*
-import java.sql.Time
-import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -25,7 +23,12 @@ class Fragment2Alarms : Fragment() {
 
     lateinit var recyclerViewAlarmElements: RecyclerView
     lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
-    private var alarms = arrayListOf<Alarm>()
+    companion object {
+        var alarms = arrayListOf<Alarm>()
+    }
+
+
+    private lateinit var multitaskerViewModel: MultitaskerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +38,7 @@ class Fragment2Alarms : Fragment() {
         val binding = DataBindingUtil.inflate<Fragment2AlarmListBinding>(
             inflater, R.layout.fragment2_alarm_list, container, false
         )
+
         // use title from alert dialog, when creating new list
         val args = Fragment2AlarmsArgs.fromBundle(requireArguments())
         (activity as ToolbarTitleChangeListener).updateTitle(args.listTitle, args.listSubTitle)
@@ -54,6 +58,11 @@ class Fragment2Alarms : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
     private fun createAlertDialog2() {
         val bindingAlert = alert1Binding()
 
@@ -70,6 +79,8 @@ class Fragment2Alarms : Fragment() {
 
             val alarm = Alarm(time = alarmTime)
             alarms.add(alarm)
+//            val insertId = (activity as MainActivity).addAlarm(alarm)
+//            Toast.makeText(context, "idx: $insertId", Toast.LENGTH_SHORT).show()
             recyclerView1AlarmsAdaptor.setAlarms(alarms)
         }
 
@@ -85,6 +96,5 @@ class Fragment2Alarms : Fragment() {
             LayoutInflater.from(context), R.layout.alert2_create_alarm_list, null, false
         )
     }
-
 
 }
