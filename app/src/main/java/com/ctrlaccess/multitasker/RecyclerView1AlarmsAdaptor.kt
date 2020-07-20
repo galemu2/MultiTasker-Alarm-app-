@@ -4,10 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +21,7 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
     private var alarms = emptyList<Alarm>()
     lateinit var binding: ViewDataBinding
 
+    private lateinit var toast: Toast
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,12 +29,12 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
     ): AlarmsViewHolder {
         binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater,
-            R.layout.element1_alarm,
+            R.layout.element1_alarms,
             parent,
             false
         )
 
-//        val view = inflater.inflate(R.layout.element1_alarm, parent, false)
+//        val view = inflater.inflate(R.layout.element1_alarms, parent, false)
         return AlarmsViewHolder(binding.root)
     }
 
@@ -72,27 +72,27 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
             currentAlarm.days.sat = !currentAlarm.days.sat
         }
 
-
-
         holder.noteView?.addTextChangedListener {
             currentAlarm.alarmNote = holder.noteView?.text.toString()
         }
 
-        val imm = holder.itemView.context
-            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        holder.itemView.setOnClickListener {
+            currentAlarm.isOn = !currentAlarm.isOn
 
-        imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
+            if (currentAlarm.isOn) {
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.alarm_is_on))
+                Toast.makeText(holder.itemView.context, "Alarm is On", Toast.LENGTH_SHORT).show()
+            } else {
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.alarm_is_off))
+                Toast.makeText(holder.itemView.context, "Alarm is Off", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     internal fun setAlarms(alarms: List<Alarm>) {
         this.alarms = alarms
         notifyDataSetChanged()
-    }
-
-    private fun clickCheckBox(checkBox: CheckBox) {
-        if (checkBox.isChecked) {
-            Toast.makeText(checkBox.context, "clicked: " + checkBox.text, Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun getTime(alarm: Alarm): String {
@@ -102,6 +102,7 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
 
         return formatter.format(time)
     }
+
 
     class AlarmsViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -117,6 +118,7 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
         val checkBoxFriday: CheckBox = itemView.findViewById(R.id.checkBoxFriday)
         val checkBoxSaturday: CheckBox = itemView.findViewById(R.id.checkBoxSaturday)
 
+        val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
 
     }
 }

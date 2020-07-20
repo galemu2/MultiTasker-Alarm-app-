@@ -6,8 +6,11 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
@@ -21,10 +24,13 @@ import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
  */
 class Fragment2Alarms : Fragment() {
 
-    lateinit var recyclerViewAlarmElements: RecyclerView
+    lateinit var recyclerViewAlarms: RecyclerView
     lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
+
+
     companion object {
         var alarms = arrayListOf<Alarm>()
+        lateinit var binding:Fragment2AlarmListBinding
     }
 
 
@@ -35,7 +41,7 @@ class Fragment2Alarms : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // return inflater.inflate(R.layout.fragment2_alarm_list, container, false)
-        val binding = DataBindingUtil.inflate<Fragment2AlarmListBinding>(
+        binding = DataBindingUtil.inflate<Fragment2AlarmListBinding>(
             inflater, R.layout.fragment2_alarm_list, container, false
         )
 
@@ -48,12 +54,18 @@ class Fragment2Alarms : Fragment() {
             createAlertDialog2()
         }
 
-        recyclerViewAlarmElements = binding.recyclerViewAlarms
+        recyclerViewAlarms = binding.recyclerViewAlarms
         recyclerView1AlarmsAdaptor = RecyclerView1AlarmsAdaptor(requireContext())
-        recyclerViewAlarmElements.adapter = recyclerView1AlarmsAdaptor
-        recyclerViewAlarmElements.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewAlarms.adapter = recyclerView1AlarmsAdaptor
+        recyclerViewAlarms.layoutManager = LinearLayoutManager(requireContext())
+
+        val itemTouchCallback =
+            SimpleItemTouchCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerViewAlarms)
 
         (activity as ToolbarTitleChangeListener).showMenu()
+
 
         return binding.root
     }
@@ -95,6 +107,32 @@ class Fragment2Alarms : Fragment() {
         return DataBindingUtil.inflate(
             LayoutInflater.from(context), R.layout.alert2_create_alarm_list, null, false
         )
+    }
+
+}
+
+class SimpleItemTouchCallback(dragDirs: Int, swipeDirs: Int) : SimpleCallback(dragDirs, swipeDirs) {
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        return false
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+        if (Fragment2Alarms.alarms.size > 0) {
+            val a = Fragment2Alarms.alarms.get(viewHolder.adapterPosition)
+            Fragment2Alarms.alarms.remove(a)
+            Toast.makeText(
+                viewHolder.itemView.context,
+                "Alarm at position :${viewHolder.adapterPosition + 1} removed",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
 }

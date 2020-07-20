@@ -14,9 +14,11 @@ data class Alarm(
     var time: AlarmTime,
 
     @Embedded
-    val days: DaysOfWeek  = DaysOfWeek(),
+    val days: DaysOfWeek = DaysOfWeek(),
 
     var alarmNote: String? = null,
+
+    var isOn: Boolean = true,
 
     var scheduleListId: Long? = null
 )

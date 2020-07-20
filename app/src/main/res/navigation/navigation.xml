@@ -26,6 +26,9 @@
             android:name="listSubTitle"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_fragment2Alarms_to_fragment1Schedules"
+            app:destination="@id/fragment1Schedules" />
     </fragment>
     <fragment
         android:id="@+id/alert1CreateAlarmList"

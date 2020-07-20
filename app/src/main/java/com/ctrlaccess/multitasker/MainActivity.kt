@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
@@ -19,7 +21,7 @@ interface ToolbarTitleChangeListener {
 
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var multitaskViewModel: MultitaskerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         setSupportActionBar(binding.toolbar)
 
         multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
+
     }
 
     override fun updateTitle(newTitle: String, newSubTitle: String?) {
@@ -57,12 +60,14 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+
             R.id.button_save_alarms -> {
+                // todo insert as new or update
+                insertAlarms(Fragment2Alarms.alarms)
 
-                val s = insertAlarms(Fragment2Alarms.alarms)
+                Fragment2Alarms.binding.root.findNavController().navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
 
-                Log.d("TAG", "${s.size}")
-
+                Toast.makeText(applicationContext, "should move", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> {

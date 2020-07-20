@@ -7,8 +7,8 @@ import com.ctrlaccess.multitasker.database.entities.Schedule
 interface ScheduleDao {
 
     // insert the schedule list, will return the id when inserting
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertSchedule(scheduleList: Schedule) //: Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertSchedule(scheduleList: Schedule): Long
 
     //update the schedule
     @Update
