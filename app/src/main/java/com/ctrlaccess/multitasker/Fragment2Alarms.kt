@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
@@ -25,12 +24,14 @@ import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
 class Fragment2Alarms : Fragment() {
 
     lateinit var recyclerViewAlarms: RecyclerView
-    lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
+    private lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
 
 
     companion object {
         var alarms = arrayListOf<Alarm>()
-        lateinit var binding:Fragment2AlarmListBinding
+        lateinit var binding: Fragment2AlarmListBinding
+        lateinit var scheduleTitle: String
+        var scheduleNote: String? = null
     }
 
 
@@ -49,6 +50,8 @@ class Fragment2Alarms : Fragment() {
         val args = Fragment2AlarmsArgs.fromBundle(requireArguments())
         (activity as ToolbarTitleChangeListener).updateTitle(args.listTitle, args.listSubTitle)
 
+        scheduleTitle = args.listTitle
+        scheduleNote = args.listSubTitle
 
         binding.fab2Alarms.setOnClickListener { v: View ->
             createAlertDialog2()

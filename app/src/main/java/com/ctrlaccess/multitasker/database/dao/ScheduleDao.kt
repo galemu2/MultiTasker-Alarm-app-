@@ -1,5 +1,6 @@
 package com.ctrlaccess.multitasker.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ctrlaccess.multitasker.database.entities.Schedule
 
@@ -18,4 +19,7 @@ interface ScheduleDao {
     @Delete
     fun deleteSchedule(scheduleList: Schedule)
     // todo all associated alarms should be deleted when deleting a schedule
+
+    @Query("SELECT * FROM Schedule")
+    fun getAllSchedules(): LiveData<List<Schedule>>
 }

@@ -9,6 +9,20 @@
         android:background="#2196F3"
         tools:context=".Fragment1Schedules">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_lists"
+            class="androidx.appcompat.app.AlertController$RecycleListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1_list"
             android:layout_width="wrap_content"

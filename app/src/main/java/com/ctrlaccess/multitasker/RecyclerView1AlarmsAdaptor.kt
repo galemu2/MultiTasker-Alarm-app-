@@ -21,8 +21,6 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
     private var alarms = emptyList<Alarm>()
     lateinit var binding: ViewDataBinding
 
-    private lateinit var toast: Toast
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -72,8 +70,8 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
             currentAlarm.days.sat = !currentAlarm.days.sat
         }
 
-        holder.noteView?.addTextChangedListener {
-            currentAlarm.alarmNote = holder.noteView?.text.toString()
+        holder.alarmNoteView?.addTextChangedListener {
+            currentAlarm.alarmNote = holder.alarmNoteView?.text.toString()
         }
 
         holder.itemView.setOnClickListener {
@@ -108,7 +106,7 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
         RecyclerView.ViewHolder(itemView) {
 
         val alarmView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
-        val noteView: EditText? = itemView.findViewById(R.id.editText2_element_alarm_note)
+        val alarmNoteView: EditText? = itemView.findViewById(R.id.editText2_element_alarm_note)
 
         val checkBoxSunday: CheckBox = itemView.findViewById(R.id.checkBoxSunday)
         val checkBoxMonday: CheckBox = itemView.findViewById(R.id.checkBoxMonday)

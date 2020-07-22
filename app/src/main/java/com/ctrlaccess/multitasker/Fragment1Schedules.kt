@@ -8,7 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.database.MultitaskerViewModel
+import com.ctrlaccess.multitasker.database.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.Alert1CreateScheduleListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment1ScheduleListBinding
 
@@ -19,6 +25,15 @@ import com.ctrlaccess.multitasker.databinding.Fragment1ScheduleListBinding
  */
 open class Fragment1Schedules : Fragment() {
 
+    lateinit var recyclerViewLists: RecyclerView
+    lateinit var recyclerViewSchedulesAdaptor: RecyclerView2SchedulesAdaptor
+    lateinit var multitaskerViewModel: MultitaskerViewModel
+
+    companion object {
+        var schedules = arrayListOf<Schedule>()
+        lateinit var binding: Fragment1ScheduleListBinding
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +41,7 @@ open class Fragment1Schedules : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment1_schedule_list, container, false)
-        val binding = DataBindingUtil.inflate<Fragment1ScheduleListBinding>(
+        binding = DataBindingUtil.inflate<Fragment1ScheduleListBinding>(
             inflater, R.layout.fragment1_schedule_list,
             container, false
         )
@@ -36,8 +51,18 @@ open class Fragment1Schedules : Fragment() {
             createAlertDialog1()
         }
 
+        multitaskerViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
+        recyclerViewLists = binding.recyclerViewLists
+        recyclerViewSchedulesAdaptor = RecyclerView2SchedulesAdaptor(requireContext())
+        recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
+        recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
+
+        multitaskerViewModel.allSchedules.observe(viewLifecycleOwner, Observer { schedules ->
+            schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
+        })
         return binding.root
     }
+
 
     private fun createAlertDialog1() {
         val bindingAlert = alert1Binding()

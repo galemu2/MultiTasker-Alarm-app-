@@ -11,18 +11,20 @@ import com.ctrlaccess.multitasker.database.entities.AlarmsInSchedule
 import com.ctrlaccess.multitasker.database.entities.Schedule
 
 class MultitaskerRepository(private val multitaskerDao: MultitaskerDao) {
-    val getAlarmsInSchedule: LiveData<List<AlarmsInSchedule>> = multitaskerDao.getAlarmsInSchedule()
+//    val getAlarmsInSchedule: LiveData<List<AlarmsInSchedule>> = multitaskerDao.getAlarmsInSchedule()
 }
 
 class ScheduleRepository(private val scheduleDao: ScheduleDao) {
+
+    val allSchedules: LiveData<List<Schedule>> = scheduleDao.getAllSchedules()
 
     fun deleteSchedule(schedule: Schedule) {
         scheduleDao.deleteSchedule(schedule)
 
     }
 
-    fun insertSchedule(schedule: Schedule) {
-        scheduleDao.insertSchedule(schedule)
+    fun insertSchedule(schedule: Schedule): Long {
+        return scheduleDao.insertSchedule(schedule)
     }
 
     fun updateSchedule(schedule: Schedule) {
@@ -40,7 +42,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
     fun insertAlarm(alarm: Alarm): Long {
         var res: Long = -1L
 
-//        MultitaskerDatabase.executor.awaitTermination()
+        // MultitaskerDatabase.executor.awaitTermination()
         MultitaskerDatabase.executor.execute {
             res = alarmDao.insertAlarm(alarm)
         }

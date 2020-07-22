@@ -2,7 +2,6 @@ package com.ctrlaccess.multitasker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
+import com.ctrlaccess.multitasker.database.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
 
 interface ToolbarTitleChangeListener {
@@ -62,10 +62,17 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         return when (item.itemId) {
 
             R.id.button_save_alarms -> {
+
+                val sch = Schedule(
+                    schedule = Fragment2Alarms.scheduleTitle,
+                    scheduleNote = Fragment2Alarms.scheduleNote
+                )
+                multitaskViewModel.insertSchedule(sch)
                 // todo insert as new or update
                 insertAlarms(Fragment2Alarms.alarms)
 
-                Fragment2Alarms.binding.root.findNavController().navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
+                Fragment2Alarms.binding.root.findNavController()
+                    .navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
 
                 Toast.makeText(applicationContext, "should move", Toast.LENGTH_SHORT).show()
                 true
@@ -84,6 +91,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
     }
 
     private fun insertAlarms(alarms: List<Alarm>): List<Long> {
+
         return multitaskViewModel.insertAlarms(alarms)
     }
 

@@ -20,4 +20,5 @@
     <string name="wednesday">W</string>
     <string name="save_button">save</string>
     <string name="list_alarm_numbers">Alarms</string>
+    <string name="alarms">alarms</string>
 </resources>

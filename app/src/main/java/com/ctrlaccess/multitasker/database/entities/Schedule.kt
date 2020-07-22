@@ -5,7 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Schedule(
-    @PrimaryKey(autoGenerate = true) val scheduleId: Long,
-    val schedule: String,
-    val scheduleNote: String?
+    @PrimaryKey(autoGenerate = true)
+    var scheduleId: Long = 0L,
+
+    var schedule: String,
+
+    var scheduleNote: String?
 )
