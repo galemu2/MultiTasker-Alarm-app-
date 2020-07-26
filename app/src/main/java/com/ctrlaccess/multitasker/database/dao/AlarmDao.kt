@@ -23,11 +23,11 @@ interface AlarmDao {
 
     // query all alarms with a specific scheduleListId todo may note be necessary
     @Query("SELECT * FROM Alarm WHERE scheduleListId= :scheduleId")
-    fun getAlarms(scheduleId: Long): LiveData<List<Alarm>>
+    fun getAlarms(scheduleId: Long):  List<Alarm>
 
     // delete alarms associated with a schedule
     @Query("Delete from Alarm where scheduleListId=:scheduleListId")
-    suspend fun deleteAlarms(scheduleListId: Long)
+    fun deleteAlarms(scheduleListId: Long)
 
     // inserting the list of alarms TODO should find a way to add "scheduleListId"
     @Insert(onConflict = OnConflictStrategy.IGNORE)

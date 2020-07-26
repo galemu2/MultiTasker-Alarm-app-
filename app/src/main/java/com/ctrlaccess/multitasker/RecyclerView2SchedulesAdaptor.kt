@@ -44,9 +44,9 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
         val currentSchedule = schedules[position]
 
         holder.scheduleView.text = currentSchedule.schedule
-        holder.numberOfAlarms.text = itemCount.toString()
+        holder.numberOfAlarms.text = currentSchedule.numberOfAlarms.toString()
 
-        holder.scheduleNoteView?.text ?: currentSchedule.scheduleNote
+        holder.scheduleNoteView.text = currentSchedule.scheduleNote ?: ""
 
     }
 
@@ -58,7 +58,7 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
     class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val scheduleView: TextView = itemView.findViewById(R.id.textView2_schedule_title)
-        val scheduleNoteView: TextView? = itemView.findViewById(R.id.textView3_schedule_note)
+        val scheduleNoteView: TextView = itemView.findViewById(R.id.textView3_schedule_note)
 
         val numberOfAlarms: TextView = itemView.findViewById(R.id.textView1_number_of_alarm)
     }

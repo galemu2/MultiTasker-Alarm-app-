@@ -2,6 +2,7 @@ package com.ctrlaccess.multitasker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -51,8 +52,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     override fun hideMenu() {
         val saveButton = binding.toolbar.menu.findItem(R.id.button_save_alarms)
-        val isVisible = saveButton.isVisible
-        if (isVisible) {
+        if (saveButton.isVisible) {
             saveButton.isVisible = false
         }
         updateTitle(getString(R.string.app_name), null)
@@ -63,37 +63,47 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
             R.id.button_save_alarms -> {
 
-                val sch = Schedule(
-                    schedule = Fragment2Alarms.scheduleTitle,
-                    scheduleNote = Fragment2Alarms.scheduleNote
-                )
-                multitaskViewModel.insertSchedule(sch)
-                // todo insert as new or update
-                insertAlarms(Fragment2Alarms.alarms)
+                val newAlarms = Fragment2Alarms.alarms
 
+                if (newAlarms.size > 0) {
+
+                    // 1. create new schedule obj
+                    val newSchedule = Schedule(
+                        schedule = Fragment2Alarms.scheduleTitle,
+                        scheduleNote = Fragment2Alarms.scheduleNote,
+                        numberOfAlarms = newAlarms.size
+                    )
+
+                    // 2. insert the schedule object.  capture the scheduleId
+                    val insertedID = multitaskViewModel.insertSchedule(newSchedule)
+
+                    // 3. update the alarms with the schedule id for later reference
+                    newAlarms.forEach { alarm ->
+                        alarm.scheduleListId = insertedID
+                        // TODO remove log
+                        Log.d("TAG", alarm.toString())
+                    }
+
+                    // 4. insert the alarms to database
+                    multitaskViewModel.insertAlarms(alarms = newAlarms)
+
+                    Toast.makeText(
+                        applicationContext,
+                        "added ${newAlarms.size} alarm/s",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(applicationContext, "no alarms added", Toast.LENGTH_SHORT).show()
+                }
+
+                // 5. navigate to Fragment1
                 Fragment2Alarms.binding.root.findNavController()
                     .navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
-
-                Toast.makeText(applicationContext, "should move", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
-//        return super.onOptionsItemSelected(item)
     }
-
-    // add alarm to database
-    fun addAlarm(alarm: Alarm): Long {
-        val id = multitaskViewModel.insertAlarm(alarm)
-        return id
-    }
-
-    private fun insertAlarms(alarms: List<Alarm>): List<Long> {
-
-        return multitaskViewModel.insertAlarms(alarms)
-    }
-
-
 }

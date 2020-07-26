@@ -40,35 +40,29 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         }
     */
     fun insertAlarm(alarm: Alarm): Long {
+        /*
         var res: Long = -1L
 
         // MultitaskerDatabase.executor.awaitTermination()
         MultitaskerDatabase.executor.execute {
             res = alarmDao.insertAlarm(alarm)
         }
+        */
 
-/*        while (res < 0){
-            Log.d("TAG", "res: $res")
-        }*/
-
-        return res
+        return alarmDao.insertAlarm(alarm)
     }
 
     fun updateAlarm(alarm: Alarm) {
         alarmDao.updateAlarm(alarm)
     }
 
-    fun getScheduleAlarms(scheduleListId: Long): LiveData<List<Alarm>> {
+    fun getScheduleAlarms(scheduleListId: Long):  List<Alarm>  {
         return alarmDao.getAlarms(scheduleListId)
     }
 
     // insert a list of alarms todo may not be necessary
     fun insertAlarms(alarms: List<Alarm>): List<Long> {
-        var res = emptyList<Long>()
-        MultitaskerDatabase.executor.execute {
-            res = alarmDao.insertAlarms(alarms)
-        }
-        return res
+        return alarmDao.insertAlarms(alarms)
     }
 
     fun updateAlarm(alarms: List<Alarm>) {

@@ -9,6 +9,7 @@ import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.Schedule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MultitaskerViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -45,11 +46,31 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun insertAlarms(alarms: List<Alarm>): List<Long> {
-        return alarmsRepository.insertAlarms(alarms)
+        var out = emptyList<Long>()
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                out = alarmsRepository.insertAlarms(alarms)
+            }
+        }
+        return out
     }
 
-    fun insertSchedule(schedule: Schedule) = viewModelScope.launch(Dispatchers.IO) {
-        scheduleRepository.insertSchedule(schedule)
-        Log.d("TAG", "insert successful")
+    fun insertSchedule(schedule: Schedule): Long {
+        var insertedId = 0L
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                insertedId = scheduleRepository.insertSchedule(schedule)
+                // viewModelScope.launch(Dispatchers.IO) { }
+            }
+        }
+        return insertedId
+    }
+
+    fun deleteSchedule(schedule: Schedule) {
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                scheduleRepository.deleteSchedule(schedule)
+            }
+        }
     }
 }

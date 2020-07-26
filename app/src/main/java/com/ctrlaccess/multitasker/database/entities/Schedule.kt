@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
 data class Schedule(
     @PrimaryKey(autoGenerate = true)
     var scheduleId: Long = 0L,
-
     var schedule: String,
-
-    var scheduleNote: String?
+    var scheduleNote: String?,
+    var numberOfAlarms:Int = 0
 )

@@ -1,6 +1,8 @@
 package com.ctrlaccess.multitasker
 
+import android.app.AlertDialog
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.database.entities.Alarm
+import com.ctrlaccess.multitasker.database.entities.AlarmTime
 import java.sql.Time
 import java.text.SimpleDateFormat
 
@@ -86,6 +89,30 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
             }
         }
 
+        holder.itemView.setOnLongClickListener {
+            editAlertDialog2(it)
+            true
+        }
+    }
+
+    // todo will implement update alarm in database
+    fun editAlertDialog2(v: View) {
+        val bindingAlart = Fragment2Alarms.alert1Binding(v.context)
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(v.context)
+
+        builder.setPositiveButton(R.string.update) { dialog, whick ->
+            Toast.makeText(v.context, "created", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(R.string.cancel_create) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.setView(bindingAlart.root)
+        builder.create().show()
+
     }
 
     internal fun setAlarms(alarms: List<Alarm>) {
@@ -94,10 +121,8 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
     }
 
     private fun getTime(alarm: Alarm): String {
-
         val time: Time = Time(alarm.time.hr, alarm.time.min, 0)
         val formatter: SimpleDateFormat = SimpleDateFormat("hh:mm a")
-
         return formatter.format(time)
     }
 
