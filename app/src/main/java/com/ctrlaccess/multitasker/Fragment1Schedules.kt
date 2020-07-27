@@ -11,12 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.Alert1CreateScheduleListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment1ScheduleListBinding
+import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
+import com.ctrlaccess.multitasker.util.RecyclerView2SchedulesAdaptor
+import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
 
 /**
  * A simple [Fragment] subclass.
@@ -27,11 +31,15 @@ open class Fragment1Schedules : Fragment() {
 
     lateinit var recyclerViewLists: RecyclerView
     lateinit var recyclerViewSchedulesAdaptor: RecyclerView2SchedulesAdaptor
-    lateinit var multitaskerViewModel: MultitaskerViewModel
+
 
     companion object {
         var schedules = arrayListOf<Schedule>()
         lateinit var binding: Fragment1ScheduleListBinding
+        lateinit var multitaskerViewModel: MultitaskerViewModel
+
+        fun deleteSchedule() {}
+
     }
 
     override fun onCreateView(
@@ -58,9 +66,13 @@ open class Fragment1Schedules : Fragment() {
         recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
 
 
+        val itemTouchCallback = ScheduleElementItemTouchCallback(this)
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerViewLists)
 
         multitaskerViewModel.allSchedules.observe(viewLifecycleOwner, Observer { schedules ->
             schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
+            Fragment1Schedules.schedules = schedules as ArrayList<Schedule>
         })
         return binding.root
     }

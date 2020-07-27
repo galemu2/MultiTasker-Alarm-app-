@@ -73,7 +73,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         alarmDao.deleteAlarm(alarm)
     }
 
-    suspend fun deleteAllAlarms(scheduleListId: Long) {
+    fun deleteAllAlarms(scheduleListId: Long) {
         alarmDao.deleteAlarms(scheduleListId)
     }
 }

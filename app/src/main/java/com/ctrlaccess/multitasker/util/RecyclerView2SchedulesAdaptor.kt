@@ -1,15 +1,14 @@
-package com.ctrlaccess.multitasker
+package com.ctrlaccess.multitasker.util
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.R
 import com.ctrlaccess.multitasker.database.entities.Schedule
 
 class RecyclerView2SchedulesAdaptor(context: Context) :
@@ -22,14 +21,16 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerView2SchedulesAdaptor.ScheduleViewHolder {
+    ): ScheduleViewHolder {
 
         binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater,
             R.layout.element2_lists, parent, false
         )
 
-        return ScheduleViewHolder(binding.root)
+        return ScheduleViewHolder(
+            binding.root
+        )
     }
 
 
@@ -38,7 +39,7 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
     }
 
     override fun onBindViewHolder(
-        holder: RecyclerView2SchedulesAdaptor.ScheduleViewHolder,
+        holder: ScheduleViewHolder,
         position: Int
     ) {
         val currentSchedule = schedules[position]
@@ -48,6 +49,7 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
 
         holder.scheduleNoteView.text = currentSchedule.scheduleNote ?: ""
 
+        currentSchedule.scheduleId
     }
 
     internal fun setSchedules(schedule: List<Schedule>) {
@@ -62,4 +64,5 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
 
         val numberOfAlarms: TextView = itemView.findViewById(R.id.textView1_number_of_alarm)
     }
+
 }

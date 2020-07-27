@@ -67,10 +67,14 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun deleteSchedule(schedule: Schedule) {
-        viewModelScope.run {
-            runBlocking(Dispatchers.IO) {
-                scheduleRepository.deleteSchedule(schedule)
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduleRepository.deleteSchedule(schedule)
+        }
+    }
+
+    fun deleteAllAlarms(scheduleListId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            alarmsRepository.deleteAllAlarms(scheduleListId)
         }
     }
 }

@@ -1,26 +1,27 @@
-package com.ctrlaccess.multitasker
+package com.ctrlaccess.multitasker.util
 
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.Fragment2Alarms
+import com.ctrlaccess.multitasker.R
 import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.AlarmTime
-import com.ctrlaccess.multitasker.util.SwipedElement
 import java.sql.Time
 import java.text.SimpleDateFormat
 
 class RecyclerView1AlarmsAdaptor(context: Context) :
-    RecyclerView.Adapter<RecyclerView1AlarmsAdaptor.AlarmsViewHolder>(), SwipedElement {
+    RecyclerView.Adapter<RecyclerView1AlarmsAdaptor.AlarmsViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<Alarm>()
@@ -38,7 +39,9 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
         )
 
 //        val view = inflater.inflate(R.layout.element1_alarms, parent, false)
-        return AlarmsViewHolder(binding.root)
+        return AlarmsViewHolder(
+            binding.root
+        )
     }
 
     override fun getItemCount(): Int {
@@ -83,10 +86,14 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
             currentAlarm.isOn = !currentAlarm.isOn
 
             if (currentAlarm.isOn) {
-                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.alarm_is_on))
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(
+                    R.color.alarm_is_on
+                ))
                 Toast.makeText(holder.itemView.context, "Alarm is On", Toast.LENGTH_SHORT).show()
             } else {
-                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.alarm_is_off))
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(
+                    R.color.alarm_is_off
+                ))
                 Toast.makeText(holder.itemView.context, "Alarm is Off", Toast.LENGTH_SHORT).show()
             }
         }
@@ -101,7 +108,8 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
 
     // todo will implement update alarm in database
     fun editAlertDialog2(v: View) {
-        val bindingAlart = Fragment2Alarms.alert1Binding(v.context)
+        val bindingAlart =
+            Fragment2Alarms.alert1Binding(v.context)
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(v.context)
 
@@ -149,10 +157,5 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
 
     }
 
-    override fun deleteSwipedElement(position: Int): Boolean {
-        val element = Fragment2Alarms.alarms.get(position)
-        val success = Fragment2Alarms.alarms.remove(element)
-        notifyDataSetChanged()
-        return success
-    }
+
 }
