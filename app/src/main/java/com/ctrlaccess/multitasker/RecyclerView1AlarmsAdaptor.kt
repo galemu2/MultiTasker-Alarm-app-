@@ -11,14 +11,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
+import com.ctrlaccess.multitasker.util.SwipedElement
 import java.sql.Time
 import java.text.SimpleDateFormat
 
 class RecyclerView1AlarmsAdaptor(context: Context) :
-    RecyclerView.Adapter<RecyclerView1AlarmsAdaptor.AlarmsViewHolder>() {
+    RecyclerView.Adapter<RecyclerView1AlarmsAdaptor.AlarmsViewHolder>(), SwipedElement {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<Alarm>()
@@ -93,7 +95,9 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
             editAlertDialog2(it)
             true
         }
+
     }
+
 
     // todo will implement update alarm in database
     fun editAlertDialog2(v: View) {
@@ -143,5 +147,12 @@ class RecyclerView1AlarmsAdaptor(context: Context) :
 
         val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
 
+    }
+
+    override fun deleteSwipedElement(position: Int): Boolean {
+        val element = Fragment2Alarms.alarms.get(position)
+        val success = Fragment2Alarms.alarms.remove(element)
+        notifyDataSetChanged()
+        return success
     }
 }

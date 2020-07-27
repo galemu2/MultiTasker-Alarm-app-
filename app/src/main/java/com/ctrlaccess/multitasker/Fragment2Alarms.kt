@@ -16,13 +16,15 @@ import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
 import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
+import com.ctrlaccess.multitasker.util.SimpleItemTouchCallback
+import com.ctrlaccess.multitasker.util.SwipedElement
 
 /**
  * A simple [Fragment] subclass.
  * Use the [Fragment2Alarms.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Fragment2Alarms : Fragment() {
+class Fragment2Alarms : Fragment()  {
 
     lateinit var recyclerViewAlarms: RecyclerView
     private lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
@@ -33,10 +35,6 @@ class Fragment2Alarms : Fragment() {
         lateinit var binding: Fragment2AlarmListBinding
         lateinit var scheduleTitle: String
         var scheduleNote: String? = null
-
-        fun checking(context: Context) {
-            Toast.makeText(context, "checking .. ", Toast.LENGTH_SHORT).show()
-         }
 
         fun alert1Binding(context: Context): Alert2CreateAlarmListBinding {
             return DataBindingUtil.inflate(
@@ -123,37 +121,7 @@ class Fragment2Alarms : Fragment() {
     }
 
 
+
 }
 
 
-class SimpleItemTouchCallback(
-    private val recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor,
-    dragDirs: Int = 0,
-    swipeDirs: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-) : SimpleCallback(dragDirs, swipeDirs) {
-
-    override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
-    ): Boolean {
-        return false
-    }
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-        if (Fragment2Alarms.alarms.size > 0) {
-            val element = Fragment2Alarms.alarms.get(viewHolder.adapterPosition)
-            Fragment2Alarms.alarms.remove(element)
-            // todo also delete from database if it exists there
-            recyclerView1AlarmsAdaptor.notifyDataSetChanged()
-
-            Toast.makeText(
-                viewHolder.itemView.context,
-                "Alarm at position :${viewHolder.adapterPosition + 1} removed",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    }
-}

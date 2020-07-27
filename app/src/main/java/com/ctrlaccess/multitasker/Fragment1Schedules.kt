@@ -57,6 +57,8 @@ open class Fragment1Schedules : Fragment() {
         recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
         recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
 
+
+
         multitaskerViewModel.allSchedules.observe(viewLifecycleOwner, Observer { schedules ->
             schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
         })
