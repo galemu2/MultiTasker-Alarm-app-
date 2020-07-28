@@ -1,4 +1,4 @@
-package com.ctrlaccess.multitasker.database.entities
+package com.ctrlaccess.multitasker.viewModel.entities
 
 data class DaysOfWeek(
     var sun: Boolean = false,

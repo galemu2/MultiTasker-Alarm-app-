@@ -1,8 +1,7 @@
-package com.ctrlaccess.multitasker.database.dao
+package com.ctrlaccess.multitasker.viewModel.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ctrlaccess.multitasker.database.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
 
 @Dao
 interface AlarmDao {

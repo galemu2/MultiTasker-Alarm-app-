@@ -1,4 +1,4 @@
-package com.ctrlaccess.multitasker.database.entities
+package com.ctrlaccess.multitasker.viewModel.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

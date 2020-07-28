@@ -12,10 +12,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.Fragment1Schedules
 import com.ctrlaccess.multitasker.R
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
+import kotlinx.coroutines.MainScope
 
-class RecyclerView2SchedulesAdaptor(context: Context) :
-    RecyclerView.Adapter<RecyclerView2SchedulesAdaptor.ScheduleViewHolder>() {
+class RecyclerView1SchedulesAdaptor(context: Context) :
+    RecyclerView.Adapter<RecyclerView1SchedulesAdaptor.ScheduleViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var schedules = emptyList<Schedule>()
@@ -44,12 +46,16 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
         holder: ScheduleViewHolder,
         position: Int
     ) {
+
         val currentSchedule = schedules[position]
+
+        scheduleHolderBackground(currentSchedule, holder)
 
         holder.scheduleView.text = currentSchedule.schedule
         holder.numberOfAlarms.text = currentSchedule.numberOfAlarms.toString()
 
         holder.scheduleNoteView.text = currentSchedule.scheduleNote ?: ""
+
 
         holder.itemView.setOnClickListener { v ->
             currentSchedule.isOn = !currentSchedule.isOn
@@ -58,22 +64,26 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
                 Fragment1Schedules.multitaskerViewModel
                     .getAllAlarms(currentSchedule.scheduleId)
 
-            if (currentSchedule.isOn) {
-                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_on))
-                alarms.forEach { alarm ->
-                    alarm.isOn = true
-                }
-            } else {
-                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_off))
-                alarms.forEach { alarm ->
-                    alarm.isOn = false
-                }
-            }
+            scheduleHolderBackground(currentSchedule, holder)
+            Fragment1Schedules.multitaskerViewModel.updateSchedule(currentSchedule)
+            Alarm.modifyAlarms(alarms, currentSchedule.isOn)
+            Fragment1Schedules.multitaskerViewModel.updateAlarms(alarms)
         }
 
         holder.itemView.setOnLongClickListener { v ->
             Toast.makeText(v.context, "long click ...", Toast.LENGTH_SHORT).show()
             true
+        }
+    }
+
+    private fun scheduleHolderBackground(
+        currentSchedule: Schedule,
+        holder: ScheduleViewHolder
+    ) {
+        if (currentSchedule.isOn) {
+            holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_on))
+        } else {
+            holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_off))
         }
     }
 

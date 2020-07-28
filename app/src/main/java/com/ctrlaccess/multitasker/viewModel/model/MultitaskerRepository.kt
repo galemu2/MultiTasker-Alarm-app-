@@ -1,17 +1,12 @@
-package com.ctrlaccess.multitasker.database
+package com.ctrlaccess.multitasker.viewModel.model
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import com.ctrlaccess.multitasker.database.dao.AlarmDao
-import com.ctrlaccess.multitasker.database.dao.MultitaskerDao
-import com.ctrlaccess.multitasker.database.dao.ScheduleDao
-import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.AlarmsInSchedule
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.AlarmsInSchedule
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 
 class MultitaskerRepository(private val multitaskerDao: MultitaskerDao) {
-//    val getAlarmsInSchedule: LiveData<List<AlarmsInSchedule>> = multitaskerDao.getAlarmsInSchedule()
+//    val getAlarmsInSchedule: List<AlarmsInSchedule> = multitaskerDao.getAlarmsInSchedule()
 }
 
 class ScheduleRepository(private val scheduleDao: ScheduleDao) {

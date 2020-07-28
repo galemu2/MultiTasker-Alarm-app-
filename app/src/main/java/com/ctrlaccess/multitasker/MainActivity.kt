@@ -9,9 +9,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.ctrlaccess.multitasker.database.MultitaskerViewModel
-import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
 
 interface ToolbarTitleChangeListener {

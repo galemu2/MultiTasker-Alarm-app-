@@ -16,12 +16,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.Fragment2Alarms
 import com.ctrlaccess.multitasker.R
-import com.ctrlaccess.multitasker.database.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
 import java.sql.Time
 import java.text.SimpleDateFormat
 
-class RecyclerView1AlarmsAdaptor(context: Context) :
-    RecyclerView.Adapter<RecyclerView1AlarmsAdaptor.AlarmsViewHolder>() {
+class RecyclerView2AlarmsAdaptor(context: Context) :
+    RecyclerView.Adapter<RecyclerView2AlarmsAdaptor.AlarmsViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<Alarm>()

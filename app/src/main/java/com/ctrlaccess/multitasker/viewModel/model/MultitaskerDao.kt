@@ -1,10 +1,9 @@
-package com.ctrlaccess.multitasker.database.dao
+package com.ctrlaccess.multitasker.viewModel.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.ctrlaccess.multitasker.database.entities.AlarmsInSchedule
+import com.ctrlaccess.multitasker.viewModel.entities.AlarmsInSchedule
 
 @Dao
 interface MultitaskerDao {

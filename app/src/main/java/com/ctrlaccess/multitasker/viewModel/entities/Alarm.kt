@@ -1,4 +1,4 @@
-package com.ctrlaccess.multitasker.database.entities
+package com.ctrlaccess.multitasker.viewModel.entities
 
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -21,4 +21,13 @@ data class Alarm(
     var isOn: Boolean = true,
 
     var scheduleListId: Long? = null
-)
+) {
+    companion object {
+        fun modifyAlarms(alarms: List<Alarm>, scheduleIsOn: Boolean) {
+
+            alarms.forEach { alarm ->
+                alarm.isOn = scheduleIsOn
+            }
+        }
+    }
+}

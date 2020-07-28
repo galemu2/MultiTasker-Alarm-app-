@@ -1,13 +1,9 @@
-package com.ctrlaccess.multitasker.database
+package com.ctrlaccess.multitasker.viewModel.model
 
 import android.content.Context
 import androidx.room.*
-import com.ctrlaccess.multitasker.database.dao.AlarmDao
-import com.ctrlaccess.multitasker.database.dao.MultitaskerDao
-import com.ctrlaccess.multitasker.database.dao.ScheduleDao
-import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.Schedule
-import java.util.concurrent.Executor
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -30,7 +26,8 @@ abstract class MultitaskerDatabase : RoomDatabase() {
         private var INSTANCE: MultitaskerDatabase? = null
 
         fun getDatabase(context: Context): MultitaskerDatabase {
-            val tempInstance = INSTANCE
+            val tempInstance =
+                INSTANCE
             if (tempInstance != null) {
                 return tempInstance
             }

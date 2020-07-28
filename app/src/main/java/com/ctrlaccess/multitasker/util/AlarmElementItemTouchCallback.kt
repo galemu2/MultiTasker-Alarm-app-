@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.Fragment2Alarms
 
 class AlarmElementItemTouchCallback(
-    private val recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor,
+    private val recyclerView2AlarmsAdaptor: RecyclerView2AlarmsAdaptor,
     dragDirs: Int = 0,
     swipeDirs: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
 ) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
@@ -34,7 +34,7 @@ class AlarmElementItemTouchCallback(
                     "Alarm at position :${position + 1} removed",
                     Toast.LENGTH_SHORT
                 ).show()
-                recyclerView1AlarmsAdaptor.notifyDataSetChanged()
+                recyclerView2AlarmsAdaptor.notifyDataSetChanged()
             }
         }
 

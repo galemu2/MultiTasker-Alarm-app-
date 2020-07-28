@@ -1,8 +1,8 @@
-package com.ctrlaccess.multitasker.database.dao
+package com.ctrlaccess.multitasker.viewModel.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 
 @Dao
 interface ScheduleDao {

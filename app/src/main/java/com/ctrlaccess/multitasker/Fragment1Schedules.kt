@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,11 +15,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ctrlaccess.multitasker.database.MultitaskerViewModel
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.Alert1ScheduleDialogBinding
 import com.ctrlaccess.multitasker.databinding.Fragment1SchedulesBinding
-import com.ctrlaccess.multitasker.util.RecyclerView2SchedulesAdaptor
+import com.ctrlaccess.multitasker.util.RecyclerView1SchedulesAdaptor
 import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
 
 /**
@@ -31,12 +30,12 @@ import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
 open class Fragment1Schedules : Fragment() {
 
     lateinit var recyclerViewLists: RecyclerView
-    lateinit var recyclerViewSchedulesAdaptor: RecyclerView2SchedulesAdaptor
+    lateinit var recyclerViewSchedulesAdaptor: RecyclerView1SchedulesAdaptor
 
     companion object {
         var schedules = arrayListOf<Schedule>()
         lateinit var binding: Fragment1SchedulesBinding
-        private lateinit var multitaskerViewModel: MultitaskerViewModel
+        lateinit var multitaskerViewModel: MultitaskerViewModel
 
     }
 
@@ -59,7 +58,7 @@ open class Fragment1Schedules : Fragment() {
 
         multitaskerViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
         recyclerViewLists = binding.recyclerViewLists
-        recyclerViewSchedulesAdaptor = RecyclerView2SchedulesAdaptor(requireContext())
+        recyclerViewSchedulesAdaptor = RecyclerView1SchedulesAdaptor(requireContext())
         recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
         recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
 

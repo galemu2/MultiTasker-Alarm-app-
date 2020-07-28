@@ -9,13 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ctrlaccess.multitasker.database.MultitaskerViewModel
-import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.AlarmTime
+import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.AlarmTime
 import com.ctrlaccess.multitasker.databinding.Alert2AlarmDialogBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmsBinding
 import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
-import com.ctrlaccess.multitasker.util.RecyclerView1AlarmsAdaptor
+import com.ctrlaccess.multitasker.util.RecyclerView2AlarmsAdaptor
 
 /**
  * A simple [Fragment] subclass.
@@ -25,7 +25,7 @@ import com.ctrlaccess.multitasker.util.RecyclerView1AlarmsAdaptor
 class Fragment2Alarms : Fragment()  {
 
     lateinit var recyclerViewAlarms: RecyclerView
-    private lateinit var recyclerView1AlarmsAdaptor: RecyclerView1AlarmsAdaptor
+    private lateinit var recyclerView2AlarmsAdaptor: RecyclerView2AlarmsAdaptor
 
     companion object {
         var alarms = arrayListOf<Alarm>()
@@ -63,15 +63,15 @@ class Fragment2Alarms : Fragment()  {
         }
 
         recyclerViewAlarms = binding.recyclerViewAlarms
-        recyclerView1AlarmsAdaptor =
-            RecyclerView1AlarmsAdaptor(
+        recyclerView2AlarmsAdaptor =
+            RecyclerView2AlarmsAdaptor(
                 requireContext()
             )
-        recyclerViewAlarms.adapter = recyclerView1AlarmsAdaptor
+        recyclerViewAlarms.adapter = recyclerView2AlarmsAdaptor
         recyclerViewAlarms.layoutManager = LinearLayoutManager(requireContext())
 
         val itemTouchCallback =
-            AlarmElementItemTouchCallback(recyclerView1AlarmsAdaptor)
+            AlarmElementItemTouchCallback(recyclerView2AlarmsAdaptor)
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerViewAlarms)
 
@@ -98,7 +98,7 @@ class Fragment2Alarms : Fragment()  {
             alarms.add(alarm)
 //            val insertId = (activity as MainActivity).addAlarm(alarm)
 //            Toast.makeText(context, "idx: $insertId", Toast.LENGTH_SHORT).show()
-            recyclerView1AlarmsAdaptor.setAlarms(alarms)
+            recyclerView2AlarmsAdaptor.setAlarms(alarms)
         }
 
         builder?.setNegativeButton(R.string.cancel_create) { dialog, which ->

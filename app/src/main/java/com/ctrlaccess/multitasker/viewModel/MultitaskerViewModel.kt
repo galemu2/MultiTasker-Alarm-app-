@@ -1,17 +1,21 @@
-package com.ctrlaccess.multitasker.database
+package com.ctrlaccess.multitasker.viewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.ctrlaccess.multitasker.database.entities.Alarm
-import com.ctrlaccess.multitasker.database.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
+import com.ctrlaccess.multitasker.viewModel.model.AlarmsRepository
+import com.ctrlaccess.multitasker.viewModel.model.MultitaskerDatabase
+import com.ctrlaccess.multitasker.viewModel.model.MultitaskerRepository
+import com.ctrlaccess.multitasker.viewModel.model.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class MultitaskerViewModel(application: Application) : AndroidViewModel(application) {
+class MultitaskerViewModel(application: Application) :
+    AndroidViewModel(application) {
 
     private val alarmsRepository: AlarmsRepository
     private val scheduleRepository: ScheduleRepository
@@ -22,29 +26,58 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
     init {
         val db = MultitaskerDatabase.getDatabase(application)
         val alarmDao = db.alarmDao()
-        alarmsRepository = AlarmsRepository(alarmDao)
+        alarmsRepository =
+            AlarmsRepository(alarmDao)
 
         val scheduleDao = db.scheduleDao()
-        scheduleRepository = ScheduleRepository(scheduleDao)
+        scheduleRepository =
+            ScheduleRepository(
+                scheduleDao
+            )
 
         val multitaskerDao = db.multitaskerDao()
-        multitaskerRepository = MultitaskerRepository(multitaskerDao)
+        multitaskerRepository =
+            MultitaskerRepository(
+                multitaskerDao
+            )
 
         allSchedules = scheduleRepository.allSchedules
     }
 
-    fun insertAlarm(alarms: Alarm): Long {
-        return alarmsRepository.insertAlarm(alarms)
+    fun insertAlarm(alarm: Alarm): Long {
+        var out = -1L
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO){
+                out = alarmsRepository.insertAlarm(alarm)
+            }
+        }
+        return out
     }
 
     fun updateAlarm(alarms: Alarm) {
-        alarmsRepository.updateAlarm(alarms)
+        viewModelScope.launch(Dispatchers.IO) {
+            alarmsRepository.updateAlarm(alarms)
+        }
     }
 
-    fun deleteAlarm(alarms: Alarm) {
-        alarmsRepository.deleteAlarm(alarms)
+    fun deleteAlarm(alarm: Alarm) {
+        viewModelScope.launch(Dispatchers.IO){
+            alarmsRepository.deleteAlarm(alarm)
+        }
+
     }
 
+    fun updateAlarms(alarms: List<Alarm>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            alarmsRepository.updateAlarm(alarms)
+        }
+    }
+
+    fun updateSchedule(schedule: Schedule){
+        viewModelScope.launch(Dispatchers.IO){
+            scheduleRepository.updateSchedule(schedule)
+        }
+    }
     fun insertAlarms(alarms: List<Alarm>): List<Long> {
         var out = emptyList<Long>()
         viewModelScope.run {
@@ -62,7 +95,6 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
                 out = alarmsRepository.getScheduleAlarms(scheduleId)
             }
         }
-
         return out
     }
 

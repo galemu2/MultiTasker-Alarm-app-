@@ -1,4 +1,4 @@
-package com.ctrlaccess.multitasker.database.entities
+package com.ctrlaccess.multitasker.viewModel.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation
