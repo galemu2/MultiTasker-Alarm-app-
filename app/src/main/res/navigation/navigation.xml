@@ -9,7 +9,7 @@
         android:id="@+id/fragment1Schedules"
         android:name="com.ctrlaccess.multitasker.Fragment1Schedules"
         android:label="fragment_schedules"
-        tools:layout="@layout/fragment1_schedule_list">
+        tools:layout="@layout/fragment1_schedules">
         <action
             android:id="@+id/action_fragmentScheduleList_to_fragmentAlarmList"
             app:destination="@id/fragment2Alarms" />
@@ -18,7 +18,7 @@
         android:id="@+id/fragment2Alarms"
         android:name="com.ctrlaccess.multitasker.Fragment2Alarms"
         android:label="@string/fragment2_alarm_list"
-        tools:layout="@layout/fragment2_alarm_list">
+        tools:layout="@layout/fragment2_alarms">
         <argument
             android:name="listTitle"
             app:argType="string" />

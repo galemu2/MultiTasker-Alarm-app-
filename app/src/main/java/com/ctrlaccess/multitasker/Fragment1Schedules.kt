@@ -2,9 +2,11 @@ package com.ctrlaccess.multitasker
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,9 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Schedule
-import com.ctrlaccess.multitasker.databinding.Alert1CreateScheduleListBinding
-import com.ctrlaccess.multitasker.databinding.Fragment1ScheduleListBinding
-import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
+import com.ctrlaccess.multitasker.databinding.Alert1ScheduleDialogBinding
+import com.ctrlaccess.multitasker.databinding.Fragment1SchedulesBinding
 import com.ctrlaccess.multitasker.util.RecyclerView2SchedulesAdaptor
 import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
 
@@ -32,13 +33,10 @@ open class Fragment1Schedules : Fragment() {
     lateinit var recyclerViewLists: RecyclerView
     lateinit var recyclerViewSchedulesAdaptor: RecyclerView2SchedulesAdaptor
 
-
     companion object {
         var schedules = arrayListOf<Schedule>()
-        lateinit var binding: Fragment1ScheduleListBinding
-        lateinit var multitaskerViewModel: MultitaskerViewModel
-
-        fun deleteSchedule() {}
+        lateinit var binding: Fragment1SchedulesBinding
+        private lateinit var multitaskerViewModel: MultitaskerViewModel
 
     }
 
@@ -48,9 +46,9 @@ open class Fragment1Schedules : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment1_schedule_list, container, false)
-        binding = DataBindingUtil.inflate<Fragment1ScheduleListBinding>(
-            inflater, R.layout.fragment1_schedule_list,
+        // return inflater.inflate(R.layout.fragment1_schedules, container, false)
+        binding = DataBindingUtil.inflate<Fragment1SchedulesBinding>(
+            inflater, R.layout.fragment1_schedules,
             container, false
         )
         (activity as ToolbarTitleChangeListener).hideMenu()
@@ -65,7 +63,6 @@ open class Fragment1Schedules : Fragment() {
         recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
         recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
 
-
         val itemTouchCallback = ScheduleElementItemTouchCallback(this)
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerViewLists)
@@ -74,6 +71,17 @@ open class Fragment1Schedules : Fragment() {
             schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
             Fragment1Schedules.schedules = schedules as ArrayList<Schedule>
         })
+
+        // todo button is used to chek database
+        binding.buttonAllData.setOnClickListener {
+            Toast.makeText(it.context, "clicked 1 .. 2 .. 3 ..", Toast.LENGTH_SHORT).show()
+            val alarms = multitaskerViewModel.getAllAlarmsChecker()
+            Log.d("TAG", alarms.toString() + "\n\n")
+
+            val schedules = multitaskerViewModel.getAllSchedulesChecker()
+            Log.d("TAG", schedules.toString())
+
+        }
         return binding.root
     }
 
@@ -109,10 +117,10 @@ open class Fragment1Schedules : Fragment() {
     }
 
     //inflate the alert dialog
-    private fun alert1Binding(): Alert1CreateScheduleListBinding {
+    private fun alert1Binding(): Alert1ScheduleDialogBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(context),
-            R.layout.alert1_create_schedule_list, null, false
+            R.layout.alert1_schedule_dialog, null, false
         )
     }
 
@@ -126,6 +134,7 @@ open class Fragment1Schedules : Fragment() {
                 )
             )
     }
+
 
 }
 

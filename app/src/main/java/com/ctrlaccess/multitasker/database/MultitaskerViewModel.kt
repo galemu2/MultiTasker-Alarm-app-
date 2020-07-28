@@ -55,6 +55,17 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
         return out
     }
 
+    fun getAllAlarms(scheduleId: Long): List<Alarm> {
+        var out = emptyList<Alarm>()
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                out = alarmsRepository.getScheduleAlarms(scheduleId)
+            }
+        }
+
+        return out
+    }
+
     fun insertSchedule(schedule: Schedule): Long {
         var insertedId = 0L
         viewModelScope.run {
@@ -76,5 +87,26 @@ class MultitaskerViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.deleteAllAlarms(scheduleListId)
         }
+    }
+
+    fun getAllSchedulesChecker(): List<Schedule> {
+        var outList = emptyList<Schedule>()
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                outList = scheduleRepository.getAllSchedulesChecer()
+            }
+        }
+
+        return outList
+    }
+
+    fun getAllAlarmsChecker(): List<Alarm> {
+        var outAlarms = emptyList<Alarm>()
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                outAlarms = alarmsRepository.getAllAlarmsChecker()
+            }
+        }
+        return outAlarms
     }
 }

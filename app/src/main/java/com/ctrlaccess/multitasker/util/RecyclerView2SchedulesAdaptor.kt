@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.ctrlaccess.multitasker.Fragment1Schedules
 import com.ctrlaccess.multitasker.R
 import com.ctrlaccess.multitasker.database.entities.Schedule
 
@@ -33,7 +36,6 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
         )
     }
 
-
     override fun getItemCount(): Int {
         return schedules.size
     }
@@ -49,7 +51,30 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
 
         holder.scheduleNoteView.text = currentSchedule.scheduleNote ?: ""
 
-        currentSchedule.scheduleId
+        holder.itemView.setOnClickListener { v ->
+            currentSchedule.isOn = !currentSchedule.isOn
+
+            val alarms =
+                Fragment1Schedules.multitaskerViewModel
+                    .getAllAlarms(currentSchedule.scheduleId)
+
+            if (currentSchedule.isOn) {
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_on))
+                alarms.forEach { alarm ->
+                    alarm.isOn = true
+                }
+            } else {
+                holder.container.setBackgroundColor(holder.container.context.resources.getColor(R.color.schedule_off))
+                alarms.forEach { alarm ->
+                    alarm.isOn = false
+                }
+            }
+        }
+
+        holder.itemView.setOnLongClickListener { v ->
+            Toast.makeText(v.context, "long click ...", Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
     internal fun setSchedules(schedule: List<Schedule>) {
@@ -63,6 +88,7 @@ class RecyclerView2SchedulesAdaptor(context: Context) :
         val scheduleNoteView: TextView = itemView.findViewById(R.id.textView3_schedule_note)
 
         val numberOfAlarms: TextView = itemView.findViewById(R.id.textView1_number_of_alarm)
-    }
 
+        val container: ConstraintLayout = itemView.findViewById(R.id.schedule_container)
+    }
 }

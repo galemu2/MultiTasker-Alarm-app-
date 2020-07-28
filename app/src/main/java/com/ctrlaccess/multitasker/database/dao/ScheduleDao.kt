@@ -22,4 +22,7 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM Schedule")
     fun getAllSchedules(): LiveData<List<Schedule>>
+
+    @Query("SELECT * FROM Schedule")
+    fun getAllSchedulesChecker():List<Schedule>
 }

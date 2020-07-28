@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.database.MultitaskerViewModel
 import com.ctrlaccess.multitasker.database.entities.Alarm
 import com.ctrlaccess.multitasker.database.entities.AlarmTime
-import com.ctrlaccess.multitasker.databinding.Alert2CreateAlarmListBinding
-import com.ctrlaccess.multitasker.databinding.Fragment2AlarmListBinding
+import com.ctrlaccess.multitasker.databinding.Alert2AlarmDialogBinding
+import com.ctrlaccess.multitasker.databinding.Fragment2AlarmsBinding
 import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
 import com.ctrlaccess.multitasker.util.RecyclerView1AlarmsAdaptor
 
@@ -29,13 +29,13 @@ class Fragment2Alarms : Fragment()  {
 
     companion object {
         var alarms = arrayListOf<Alarm>()
-        lateinit var binding: Fragment2AlarmListBinding
+        lateinit var binding: Fragment2AlarmsBinding
         lateinit var scheduleTitle: String
         var scheduleNote: String? = null
 
-        fun alert1Binding(context: Context): Alert2CreateAlarmListBinding {
+        fun alert1Binding(context: Context): Alert2AlarmDialogBinding {
             return DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.alert2_create_alarm_list, null, false
+                LayoutInflater.from(context), R.layout.alert2_alarm_dialog, null, false
             )
         }
     }
@@ -46,9 +46,9 @@ class Fragment2Alarms : Fragment()  {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // return inflater.inflate(R.layout.fragment2_alarm_list, container, false)
-        binding = DataBindingUtil.inflate<Fragment2AlarmListBinding>(
-            inflater, R.layout.fragment2_alarm_list, container, false
+        // return inflater.inflate(R.layout.fragment2_alarms, container, false)
+        binding = DataBindingUtil.inflate<Fragment2AlarmsBinding>(
+            inflater, R.layout.fragment2_alarms, container, false
         )
 
         // use title from alert dialog, when creating new list
@@ -74,7 +74,6 @@ class Fragment2Alarms : Fragment()  {
             AlarmElementItemTouchCallback(recyclerView1AlarmsAdaptor)
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerViewAlarms)
-
 
         (activity as ToolbarTitleChangeListener).showMenu()
 

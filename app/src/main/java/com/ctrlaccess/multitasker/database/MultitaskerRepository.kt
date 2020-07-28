@@ -30,6 +30,11 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
     fun updateSchedule(schedule: Schedule) {
         scheduleDao.updateSchedule(schedule)
     }
+
+    // used for development purposes only
+    fun getAllSchedulesChecer(): List<Schedule> {
+        return scheduleDao.getAllSchedulesChecker()
+    }
 }
 
 class AlarmsRepository(private val alarmDao: AlarmDao) {
@@ -56,7 +61,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         alarmDao.updateAlarm(alarm)
     }
 
-    fun getScheduleAlarms(scheduleListId: Long):  List<Alarm>  {
+    fun getScheduleAlarms(scheduleListId: Long): List<Alarm> {
         return alarmDao.getAlarms(scheduleListId)
     }
 
@@ -69,11 +74,17 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         alarmDao.updateAlarms(alarms)
     }
 
+
     fun deleteAlarm(alarm: Alarm) {
         alarmDao.deleteAlarm(alarm)
     }
 
     fun deleteAllAlarms(scheduleListId: Long) {
         alarmDao.deleteAlarms(scheduleListId)
+    }
+
+    // used for developement purposes only
+    fun getAllAlarmsChecker(): List<Alarm> {
+        return alarmDao.getAllAlarmsChecker()
     }
 }

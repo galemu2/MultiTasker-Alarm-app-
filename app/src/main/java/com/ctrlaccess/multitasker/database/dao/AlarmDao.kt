@@ -32,4 +32,7 @@ interface AlarmDao {
     // inserting the list of alarms TODO should find a way to add "scheduleListId"
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAlarms(alarms: List<Alarm>): List<Long>
+
+    @Query("SELECT * from Alarm")
+    fun getAllAlarmsChecker():List<Alarm>
 }
