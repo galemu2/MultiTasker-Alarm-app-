@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_fragment2Alarms_to_fragment1Schedules"
             app:destination="@id/fragment1Schedules" />
+        <argument
+            android:name="scheduleID"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/alert1CreateAlarmList"

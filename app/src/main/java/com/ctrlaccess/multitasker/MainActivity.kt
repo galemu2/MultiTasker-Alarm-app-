@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
 import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
 
 interface ToolbarTitleChangeListener {
     fun updateTitle(title: String, subTitle: String?)
@@ -22,7 +23,11 @@ interface ToolbarTitleChangeListener {
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var multitaskViewModel: MultitaskerViewModel
+
+    companion object{
+        lateinit var multitaskViewModel: MultitaskerViewModel
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,34 +67,43 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         return when (item.itemId) {
 
             R.id.button_save_alarms -> {
-
+                // todo mush choose between saving new schedule or updating old sch
                 val newAlarms = Fragment2Alarms.alarms
 
                 if (newAlarms.size > 0) {
 
+
                     // 1. create new schedule obj
                     val newSchedule = Schedule(
-                        schedule = Fragment2Alarms.scheduleTitle,
-                        scheduleNote = Fragment2Alarms.scheduleNote,
+                        schedule = binding.toolbar.title.toString(),
+                        scheduleNote = binding.toolbar.subtitle.toString(),
                         numberOfAlarms = newAlarms.size
                     )
 
-                    // 2. insert the schedule object.  capture the scheduleId
-                    val insertedID = multitaskViewModel.insertSchedule(newSchedule)
+                    if (Fragment2Alarms.args.scheduleID < 0) {
 
-                    // 3. update the alarms with the schedule id for later reference
-                    newAlarms.forEach { alarm ->
-                        alarm.scheduleListId = insertedID
-                        // TODO remove log
-                        Log.d("TAG", alarm.toString())
+                        // 2. insert the schedule object.  capture the scheduleId
+                        val insertedID = multitaskViewModel.insertSchedule(newSchedule)
+
+                        // 3. update the alarms with the schedule id for later reference
+                        Alarm.alarmsAddScheduleId(newAlarms, insertedID)
+
+                        // 4. insert the alarms to database
+                        multitaskViewModel.insertAlarms(newAlarms)
+
+                    } else {
+
+                        val updatedAlarms =
+                            Alarm.alarmsAddScheduleId(newAlarms, Fragment2Alarms.args.scheduleID)
+
+                        multitaskViewModel.insertAlarms(updatedAlarms)
+                        multitaskViewModel.updateSchedule(newSchedule)
+                        // multitaskViewModel.updateAlarms(newAlarms)
+
                     }
-
-                    // 4. insert the alarms to database
-                    multitaskViewModel.insertAlarms(alarms = newAlarms)
-
                     Toast.makeText(
                         applicationContext,
-                        "added ${newAlarms.size} alarm/s",
+                        "${newAlarms.size} alarms",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

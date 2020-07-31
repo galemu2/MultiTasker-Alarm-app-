@@ -22,19 +22,17 @@ android {
         }
     }
 
-
+/*
     buildFeatures {
         dataBinding {
             enabled = true
         }
-    }
+    }*/
 
-    /*
     dataBinding {
         enabled = true
     }
-    */
-    
+
     buildTypes {
         release {
             minifyEnabled true

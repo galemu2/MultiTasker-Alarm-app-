@@ -23,11 +23,21 @@ data class Alarm(
     var scheduleListId: Long? = null
 ) {
     companion object {
-        fun modifyAlarms(alarms: List<Alarm>, scheduleIsOn: Boolean) {
+        fun alarmsOnOff(alarms: List<Alarm>, scheduleIsOn: Boolean) {
 
             alarms.forEach { alarm ->
                 alarm.isOn = scheduleIsOn
             }
+        }
+
+        fun alarmsAddScheduleId(alarms: List<Alarm>, scheduleListId: Long):List<Alarm>{
+
+            alarms.forEach { alarm ->
+                if(alarm.scheduleListId != scheduleListId){
+                    alarm.scheduleListId = scheduleListId
+                }
+            }
+            return alarms
         }
     }
 }

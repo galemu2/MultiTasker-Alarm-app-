@@ -11,6 +11,7 @@
     <string name="note_optional">note (optional)</string>
     <string name="short_note">short note (optional)</string>
     <string name="alarm_element">alarm element</string>
+
     <string name="monday">M</string>
     <string name="friday">F</string>
     <string name="thursday">T</string>
@@ -18,8 +19,12 @@
     <string name="saturday">S</string>
     <string name="tuesday">T</string>
     <string name="wednesday">W</string>
+
     <string name="save_button">save</string>
     <string name="list_alarm_numbers">Alarms</string>
     <string name="alarms">alarms</string>
+
+
     <string name="update">update</string>
+    <string name="edit">edit</string>
 </resources>

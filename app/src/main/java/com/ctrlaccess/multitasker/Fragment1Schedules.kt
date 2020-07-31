@@ -1,6 +1,7 @@
 package com.ctrlaccess.multitasker
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,17 +11,15 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
-import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.Alert1ScheduleDialogBinding
 import com.ctrlaccess.multitasker.databinding.Fragment1SchedulesBinding
 import com.ctrlaccess.multitasker.util.RecyclerView1SchedulesAdaptor
 import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 
 /**
  * A simple [Fragment] subclass.
@@ -35,7 +34,18 @@ open class Fragment1Schedules : Fragment() {
     companion object {
         var schedules = arrayListOf<Schedule>()
         lateinit var binding: Fragment1SchedulesBinding
-        lateinit var multitaskerViewModel: MultitaskerViewModel
+
+        //inflate the alert dialog
+        fun inflateAlert1Binding(context: Context): Alert1ScheduleDialogBinding {
+            return DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                R.layout.alert1_schedule_dialog, null, false
+            )
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
     }
 
@@ -50,13 +60,14 @@ open class Fragment1Schedules : Fragment() {
             inflater, R.layout.fragment1_schedules,
             container, false
         )
+
+
         (activity as ToolbarTitleChangeListener).hideMenu()
 
         binding.fab1List.setOnClickListener {
-            createAlertDialog1()
+            createAlertDialog1(requireContext())
         }
 
-        multitaskerViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
         recyclerViewLists = binding.recyclerViewLists
         recyclerViewSchedulesAdaptor = RecyclerView1SchedulesAdaptor(requireContext())
         recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
@@ -66,36 +77,36 @@ open class Fragment1Schedules : Fragment() {
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerViewLists)
 
-        multitaskerViewModel.allSchedules.observe(viewLifecycleOwner, Observer { schedules ->
-            schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
-            Fragment1Schedules.schedules = schedules as ArrayList<Schedule>
-        })
+        MainActivity.multitaskViewModel.allSchedules.observe(
+            viewLifecycleOwner,
+            Observer { schedules ->
+                schedules?.let { recyclerViewSchedulesAdaptor.setSchedules(it) }
+                Fragment1Schedules.schedules = schedules as ArrayList<Schedule>
+            })
 
-        // todo button is used to chek database
+        // todo button is used to check database
         binding.buttonAllData.setOnClickListener {
-            Toast.makeText(it.context, "clicked 1 .. 2 .. 3 ..", Toast.LENGTH_SHORT).show()
-            val alarms = multitaskerViewModel.getAllAlarmsChecker()
-            Log.d("TAG", alarms.toString() + "\n\n")
 
-            val schedules = multitaskerViewModel.getAllSchedulesChecker()
+            val alarms = MainActivity.multitaskViewModel.getAllAlarmsChecker()
+            Log.d("TAG", "  ")
+            Log.d("TAG", alarms.toString())
+            Log.d("TAG", "  ")
+            val schedules = MainActivity.multitaskViewModel.getAllSchedulesChecker()
             Log.d("TAG", schedules.toString())
 
         }
         return binding.root
     }
 
+    private fun createAlertDialog1(context: Context) {
 
-    private fun createAlertDialog1() {
-        val bindingAlert = alert1Binding()
+        val bindingAlert = inflateAlert1Binding(context)
 
-        val builder: AlertDialog.Builder? =
-            activity?.let {
-                AlertDialog.Builder(it)
-            }
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-        builder?.setView(bindingAlert?.root)
+        builder.setView(bindingAlert.root)
 
-        builder?.setPositiveButton(
+        builder.setPositiveButton(
             R.string.create
         ) { dialog, which ->
             //check for title
@@ -108,28 +119,22 @@ open class Fragment1Schedules : Fragment() {
                 Toast.makeText(context, "Title required.", Toast.LENGTH_SHORT).show()
         }
 
-        builder?.setNegativeButton(R.string.cancel_create) { dialog, which ->
-            dialog?.dismiss()
+        builder.setNegativeButton(R.string.cancel_create) { dialog, which ->
+            dialog.dismiss()
         }
 
-        builder?.create()?.show()
+        builder.create().show()
     }
 
-    //inflate the alert dialog
-    private fun alert1Binding(): Alert1ScheduleDialogBinding {
-        return DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.alert1_schedule_dialog, null, false
-        )
-    }
 
     //navigate from fragment1 to fragment2
-    private fun startNavigation(listTitle: String, listSubTitle: String?) {
+    private fun startNavigation(listTitle: String, listSubTitle: String?, scheduleId: Long = -1) {
         view?.findNavController()
             ?.navigate(
                 Fragment1SchedulesDirections.actionFragmentScheduleListToFragmentAlarmList(
                     listTitle,
-                    listSubTitle
+                    listSubTitle,
+                    scheduleId
                 )
             )
     }

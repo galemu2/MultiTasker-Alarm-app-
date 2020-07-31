@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ctrlaccess.multitasker.Fragment1Schedules
 import com.ctrlaccess.multitasker.Fragment2Alarms
+import com.ctrlaccess.multitasker.MainActivity
 
 class ScheduleElementItemTouchCallback(
     val fragment1Schedules: Fragment1Schedules,
@@ -26,8 +27,10 @@ class ScheduleElementItemTouchCallback(
         val schedule = Fragment1Schedules.schedules.get(position)
         val scheduleId = schedule.scheduleId
 
-        Fragment1Schedules.multitaskerViewModel.deleteAllAlarms(scheduleId)
-        Fragment1Schedules.multitaskerViewModel.deleteSchedule(schedule)
+        // swipe and delete schedule and associated alarms
+        MainActivity.multitaskViewModel.deleteAllAlarms(scheduleId)
+        MainActivity.multitaskViewModel.deleteSchedule(schedule)
+
         Toast.makeText(
             viewHolder.itemView.context,
             "ID: ${schedule.scheduleId}",
