@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         // setContentView(R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
 
-
         multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
 
     }

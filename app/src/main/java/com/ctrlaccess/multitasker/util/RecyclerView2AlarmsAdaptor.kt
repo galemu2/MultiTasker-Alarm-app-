@@ -96,17 +96,13 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             currentAlarm.alarmNote = holder.alarmNoteView.text.toString()
         }
 
-        holder.alarmNoteView.setOnKeyListener { _, keyCode, event ->
-
-            if ((event.action == KeyEvent.ACTION_DOWN) and (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                val imm = binding.root.context
+        holder.alarmNoteView.setOnFocusChangeListener { view, hasFocus ->
+            if(!hasFocus){
+                val imm = view.context
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-                imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
             }
-            return@setOnKeyListener false
         }
 
         holder.itemView.setOnClickListener {
@@ -220,3 +216,5 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
     }
 }
+
+
