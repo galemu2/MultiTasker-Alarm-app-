@@ -22,7 +22,6 @@ class AlarmElementItemTouchCallback(
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-        // todo check if alarm is removed from database as well
         val position = viewHolder.adapterPosition
 
         if (Fragment2Alarms.alarms.size > 0) {

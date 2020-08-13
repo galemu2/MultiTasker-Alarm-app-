@@ -2,10 +2,7 @@ package com.ctrlaccess.multitasker.util
 
 import android.app.AlertDialog
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +21,7 @@ import com.ctrlaccess.multitasker.viewModel.entities.AlarmTime
 import com.ctrlaccess.multitasker.viewModel.entities.DaysOfWeek
 import java.sql.Time
 import java.text.SimpleDateFormat
+import java.util.*
 
 class RecyclerView2AlarmsAdaptor(context: Context) :
     RecyclerView.Adapter<RecyclerView2AlarmsAdaptor.AlarmsViewHolder>() {
@@ -38,12 +36,12 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     ): AlarmsViewHolder {
         binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater,
-            R.layout.element1_alarms,
+            R.layout.element2_alarms,
             parent,
             false
         )
 
-//        val view = inflater.inflate(R.layout.element1_alarms, parent, false)
+//        val view = inflater.inflate(R.layout.element2_alarms, parent, false)
         return AlarmsViewHolder(binding.root)
     }
 
@@ -65,30 +63,45 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
         holder.checkBoxSunday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.sun = !currentAlarm.days.sun
+
+            Log.d("TAG", Arrays.toString(currentAlarm.days.checkedDays))
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxMonday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.mon = !currentAlarm.days.mon
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxTuesday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.tue = !currentAlarm.days.tue
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxWednesday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.wed = !currentAlarm.days.wed
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxThursday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.thurs = !currentAlarm.days.thurs
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxFriday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.fri = !currentAlarm.days.fri
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
+
         holder.checkBoxSaturday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.sat = !currentAlarm.days.sat
+
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
@@ -97,7 +110,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         }
 
         holder.alarmNoteView.setOnFocusChangeListener { view, hasFocus ->
-            if(!hasFocus){
+            if (!hasFocus) {
                 val imm = view.context
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -118,20 +131,23 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
-        holder.itemView.setOnLongClickListener {
-            updateAlarmAlertDialog(it, position)
+        holder.itemView.setOnLongClickListener { view ->
+            updateAlarmAlertDialog(view, position)
             true
         }
     }
 
-    private fun currentAlarmDaysOfWeek(holder: AlarmsViewHolder, days: DaysOfWeek) {
-        holder.checkBoxSunday.isChecked = days.sun
-        holder.checkBoxMonday.isChecked = days.mon
-        holder.checkBoxTuesday.isChecked = days.tue
-        holder.checkBoxWednesday.isChecked = days.wed
-        holder.checkBoxThursday.isChecked = days.thurs
-        holder.checkBoxFriday.isChecked = days.fri
-        holder.checkBoxSaturday.isChecked = days.sat
+
+    private fun currentAlarmDaysOfWeek(holder: AlarmsViewHolder, daysOfWeek: DaysOfWeek) {
+
+        holder.checkBoxSunday.isChecked = daysOfWeek.sun
+        holder.checkBoxMonday.isChecked = daysOfWeek.mon
+        holder.checkBoxTuesday.isChecked = daysOfWeek.tue
+        holder.checkBoxWednesday.isChecked = daysOfWeek.wed
+        holder.checkBoxThursday.isChecked = daysOfWeek.thurs
+        holder.checkBoxFriday.isChecked = daysOfWeek.fri
+        holder.checkBoxSaturday.isChecked = daysOfWeek.sat
+
     }
 
     private fun currentAlarmNote(editText: EditText, note: String?) {
@@ -158,8 +174,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         }
     }
 
-    // todo will implement update alarm in database
-    fun updateAlarmAlertDialog(view: View, position: Int) {
+    private fun updateAlarmAlertDialog(view: View, position: Int) {
 
         val bindingAlarm =
             Fragment2Alarms.alert2Binding(view.context)
@@ -193,8 +208,8 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     }
 
     private fun getTime(alarm: Alarm): String {
-        val time: Time = Time(alarm.time.hr, alarm.time.min, 0)
-        val formatter: SimpleDateFormat = SimpleDateFormat("hh:mm a")
+        val time = Time(alarm.time.hr, alarm.time.min, 0)
+        val formatter = SimpleDateFormat("hh:mm a")
         return formatter.format(time)
     }
 

@@ -6,7 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2196F3"
+        android:background="@color/schedules_background"
+        android:clipToPadding="false"
         tools:context=".Fragment1Schedules">
 
         <androidx.recyclerview.widget.RecyclerView

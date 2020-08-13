@@ -7,7 +7,7 @@
         android:id="@+id/fragment2Container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F44336">
+        android:background="@color/alarms_background">
 
         <TextClock
             android:id="@+id/textClock"

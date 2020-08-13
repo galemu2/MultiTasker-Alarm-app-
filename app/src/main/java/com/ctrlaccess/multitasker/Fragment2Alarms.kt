@@ -91,7 +91,7 @@ class Fragment2Alarms : Fragment() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
         builder.setPositiveButton(R.string.create) { dialog, which ->
-
+bindingAlert.timePicker
             val alarmTime = AlarmTime(
                 bindingAlert.timePicker.currentHour,
                 bindingAlert.timePicker.currentMinute

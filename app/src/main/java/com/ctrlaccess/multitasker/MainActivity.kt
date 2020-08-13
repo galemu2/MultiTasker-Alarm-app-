@@ -1,5 +1,6 @@
 package com.ctrlaccess.multitasker
 
+import android.app.AlarmManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.ctrlaccess.multitasker.alarm.MyAlarmManager
 import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
 import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
@@ -23,8 +25,9 @@ interface ToolbarTitleChangeListener {
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var myAlarmManager: MyAlarmManager
 
-    companion object{
+    companion object {
         lateinit var multitaskViewModel: MultitaskerViewModel
     }
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         setSupportActionBar(binding.toolbar)
 
         multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
+        myAlarmManager = MyAlarmManager(this)
 
     }
 
@@ -70,7 +74,9 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                 val newAlarms = Fragment2Alarms.alarms
 
                 if (newAlarms.size > 0) {
-
+                    newAlarms.forEach { alarm ->
+                        myAlarmManager.serRepeatingAlarm(alarm)
+                    }
 
                     // 1. create new schedule obj
                     val newSchedule = Schedule(
@@ -105,6 +111,8 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         "${newAlarms.size} alarms",
                         Toast.LENGTH_SHORT
                     ).show()
+
+
                 } else {
                     Toast.makeText(applicationContext, "no alarms added", Toast.LENGTH_SHORT).show()
                 }

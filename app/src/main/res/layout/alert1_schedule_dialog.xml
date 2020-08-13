@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="23dp"
-        android:background="#FF5722"
+        android:background="@color/alert1_create_schedule"
         android:padding="32dp">
 
 

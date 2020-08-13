@@ -32,7 +32,7 @@ class RecyclerView1SchedulesAdaptor(context: Context) :
 
         binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater,
-            R.layout.element2_lists, parent, false
+            R.layout.element1_schedules, parent, false
         )
 
         return ScheduleViewHolder(
