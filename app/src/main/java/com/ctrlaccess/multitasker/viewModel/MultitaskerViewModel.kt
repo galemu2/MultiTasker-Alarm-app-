@@ -140,6 +140,7 @@ class MultitaskerViewModel(application: Application) :
                 outAlarms = alarmsRepository.getAllAlarmsChecker()
             }
         }
+        Log.d("ALARM", "all alarms are here ... ${outAlarms.size} ")
         return outAlarms
     }
 }

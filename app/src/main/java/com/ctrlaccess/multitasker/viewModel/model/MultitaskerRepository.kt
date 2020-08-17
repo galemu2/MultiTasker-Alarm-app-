@@ -78,7 +78,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
         alarmDao.deleteAlarms(scheduleListId)
     }
 
-    // used for developement purposes only
+    // used for development purposes only
     fun getAllAlarmsChecker(): List<Alarm> {
         return alarmDao.getAllAlarmsChecker()
     }

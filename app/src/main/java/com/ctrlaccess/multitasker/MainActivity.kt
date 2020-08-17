@@ -1,20 +1,22 @@
 package com.ctrlaccess.multitasker
 
-import android.app.AlarmManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.ctrlaccess.multitasker.alarm.MyAlarmManager
-import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
-import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
+import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Schedule
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 interface ToolbarTitleChangeListener {
     fun updateTitle(title: String, subTitle: String?)
@@ -74,9 +76,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                 val newAlarms = Fragment2Alarms.alarms
 
                 if (newAlarms.size > 0) {
-                    newAlarms.forEach { alarm ->
-                        myAlarmManager.serRepeatingAlarm(alarm)
-                    }
+
 
                     // 1. create new schedule obj
                     val newSchedule = Schedule(
@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         numberOfAlarms = newAlarms.size
                     )
 
+                    // new alarms -> must be inserted new
                     if (Fragment2Alarms.args.scheduleID < 0) {
 
                         // 2. insert the schedule object.  capture the scheduleId
@@ -96,6 +97,8 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         // 4. insert the alarms to database
                         multitaskViewModel.insertAlarms(newAlarms)
 
+
+                        //
                     } else {
 
                         val updatedAlarms =
@@ -120,6 +123,24 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                 // 5. navigate to Fragment1
                 Fragment2Alarms.binding.root.findNavController()
                     .navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
+
+                // todo gets all alarms and sets the alarm manager based on the alarms
+                var allAlarmss: List<Alarm>? = null
+
+                runBlocking {
+                    val job: Job = launch(Dispatchers.Default) {
+                        allAlarmss = multitaskViewModel.getAllAlarmsChecker()
+                    }
+                    job.join()
+                    allAlarmss?.forEach { alarm ->
+                        if (alarm.alarmManager != null) {
+                            myAlarmManager.cancelRepeatingAlarm(alarm.alarmManager)
+                        }
+                        alarm.alarmManager = myAlarmManager.serRepeatingAlarm(alarm)
+                    }
+                }
+
+
                 true
             }
             else -> {
