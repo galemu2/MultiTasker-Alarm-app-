@@ -1,23 +1,24 @@
 package com.ctrlaccess.multitasker
 
+//import com.ctrlaccess.multitasker.viewModel.entities.AlarmTime
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
-import com.ctrlaccess.multitasker.viewModel.entities.Alarm
-import com.ctrlaccess.multitasker.viewModel.entities.AlarmTime
 import com.ctrlaccess.multitasker.databinding.Alert2AlarmDialogBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmsBinding
 import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
 import com.ctrlaccess.multitasker.util.RecyclerView2AlarmsAdaptor
+import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -43,7 +44,7 @@ class Fragment2Alarms : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-     }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +78,8 @@ class Fragment2Alarms : Fragment() {
 
         if (args.scheduleID > 0) {
             Log.d("TAG", "scheduleID: ${args.scheduleID}")
-            alarms = MainActivity.multitaskViewModel.getAllAlarms(args.scheduleID) as ArrayList<Alarm>
+            alarms =
+                MainActivity.multitaskViewModel.getAllAlarms(args.scheduleID) as ArrayList<Alarm>
             recyclerView2AlarmsAdaptor.setAlarms(alarms)
         }
 
@@ -91,12 +93,17 @@ class Fragment2Alarms : Fragment() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
         builder.setPositiveButton(R.string.create) { dialog, which ->
-bindingAlert.timePicker
-            val alarmTime = AlarmTime(
-                bindingAlert.timePicker.currentHour,
-                bindingAlert.timePicker.currentMinute
-            )
-            val alarm = Alarm(time = alarmTime)
+//            bindingAlert.timePicker
+//            val alarmTime = AlarmTime(
+//                bindingAlert.timePicker.currentHour,
+//                bindingAlert.timePicker.currentMinute
+//            )
+            val dayTime = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, bindingAlert.timePicker.currentHour)
+                set(Calendar.MINUTE, bindingAlert.timePicker.currentMinute)
+            }
+            val alarm = Alarm(date = dayTime)
 
             alarms.add(alarm)
             recyclerView2AlarmsAdaptor.setAlarms(alarms)

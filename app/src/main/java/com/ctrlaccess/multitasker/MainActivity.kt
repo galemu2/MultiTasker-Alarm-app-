@@ -1,6 +1,7 @@
 package com.ctrlaccess.multitasker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -27,10 +28,11 @@ interface ToolbarTitleChangeListener {
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var myAlarmManager: MyAlarmManager
 
     companion object {
         lateinit var multitaskViewModel: MultitaskerViewModel
+          lateinit var myAlarmManager: MyAlarmManager
+
     }
 
 
@@ -133,14 +135,15 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                     }
                     job.join()
                     allAlarmss?.forEach { alarm ->
-                        if (alarm.alarmManager != null) {
-                            myAlarmManager.cancelRepeatingAlarm(alarm.alarmManager)
+                        if (alarm.pendingIntent != null) {
+
+
+                            myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
                         }
-                        alarm.alarmManager = myAlarmManager.serRepeatingAlarm(alarm)
+                        alarm.pendingIntent = myAlarmManager.serRepeatingAlarm(alarm)
+                        Log.d("ALARM", "pendingIntent: ${alarm.pendingIntent.toString()}")
                     }
                 }
-
-
                 true
             }
             else -> {

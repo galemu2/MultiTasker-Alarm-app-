@@ -17,7 +17,6 @@ import com.ctrlaccess.multitasker.Fragment2Alarms
 import com.ctrlaccess.multitasker.MainActivity
 import com.ctrlaccess.multitasker.R
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
-import com.ctrlaccess.multitasker.viewModel.entities.AlarmTime
 import com.ctrlaccess.multitasker.viewModel.entities.DaysOfWeek
 import java.sql.Time
 import java.text.SimpleDateFormat
@@ -55,7 +54,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     ) {
         val currentAlarm = alarms[position]
 
-        currentAlarmOnOff(holder, currentAlarm.isOn)
+        currentAlarmOnOff(holder, currentAlarm)
         currentAlarmNote(holder.alarmNoteView, currentAlarm.alarmNote.toString())
         currentAlarmDaysOfWeek(holder, currentAlarm.days)
 
@@ -121,7 +120,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         holder.itemView.setOnClickListener {
             currentAlarm.isOn = !currentAlarm.isOn
 
-            currentAlarmOnOff(holder, currentAlarm.isOn)
+            currentAlarmOnOff(holder, currentAlarm)
             val on_off = if (currentAlarm.isOn) "On" else "Off"
             Toast.makeText(
                 holder.itemView.context,
@@ -158,19 +157,22 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         }
     }
 
-    private fun currentAlarmOnOff(holder: AlarmsViewHolder, isOn: Boolean) {
-        if (isOn) {
+    private fun currentAlarmOnOff(holder: AlarmsViewHolder, alarm: Alarm) {
+        if (alarm.isOn) {
             holder.container.setBackgroundColor(
                 holder.container.context.resources.getColor(
                     R.color.alarm_is_on
                 )
             )
+            MainActivity.myAlarmManager.serRepeatingAlarm(alarm)
         } else {
             holder.container.setBackgroundColor(
                 holder.container.context.resources.getColor(
                     R.color.alarm_is_off
                 )
             )
+            MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
+
         }
     }
 
@@ -182,12 +184,14 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
 
         builder.setPositiveButton(R.string.update) { dialog, whick ->
-            val alarmTime = AlarmTime(
-                bindingAlarm.timePicker.currentHour,
-                bindingAlarm.timePicker.currentMinute
-            )
+
             val oldAlarm = Fragment2Alarms.alarms.get(position)
-            oldAlarm.time = alarmTime
+            val dateTime = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, bindingAlarm.timePicker.currentHour)
+                set(Calendar.MINUTE, bindingAlarm.timePicker.currentMinute)
+            }
+            oldAlarm.date = dateTime
             MainActivity.multitaskViewModel.updateAlarm(oldAlarm)
             notifyDataSetChanged()
             dialog.dismiss()
@@ -208,7 +212,10 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     }
 
     private fun getTime(alarm: Alarm): String {
-        val time = Time(alarm.time.hr, alarm.time.min, 0)
+        val hr = alarm.date?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+            .get(Calendar.HOUR_OF_DAY)
+        val min = alarm.date?.get(Calendar.MINUTE) ?: Calendar.getInstance().get(Calendar.MINUTE)
+        val time = Time(hr, min, 0)
         val formatter = SimpleDateFormat("hh:mm a")
         return formatter.format(time)
     }

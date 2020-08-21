@@ -1,7 +1,6 @@
 package com.ctrlaccess.multitasker.viewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -140,7 +139,6 @@ class MultitaskerViewModel(application: Application) :
                 outAlarms = alarmsRepository.getAllAlarmsChecker()
             }
         }
-        Log.d("ALARM", "all alarms are here ... ${outAlarms.size} ")
         return outAlarms
     }
 }

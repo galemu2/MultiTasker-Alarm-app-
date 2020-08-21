@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
 import java.util.*
 
@@ -32,8 +33,9 @@ class MyAlarmManager(context: Context) {
                 var diff = index - (calToday - 1)
 
                 if (diff == 0) {
-                    val now = convertToMinute(calHr, calMin)
-                    val schTime = convertToMinute(alarm.time.hr, alarm.time.min)
+                    val now = cal.timeInMillis // convertToMinute(calHr, calMin)
+                    val schTime = alarm.date?.timeInMillis
+                        ?: now  // convertToMinute(alarm.time.hr, alarm.time.min)
                     if (now > schTime) {
                         diff = 7
                     }
@@ -54,8 +56,8 @@ class MyAlarmManager(context: Context) {
         if (factor == Long.MAX_VALUE) {
             factor = 0
         }
-//        Log.d(TAG, Arrays.toString(weekDay))
-//        Log.d(TAG, "factor $factor")
+        Log.d(TAG, Arrays.toString(weekDay))
+        Log.d(TAG, "factor $factor")
         return factor
     }
 
@@ -68,9 +70,11 @@ class MyAlarmManager(context: Context) {
         }
     }
 
-    fun serRepeatingAlarm(alarm: Alarm): AlarmManager {
-        val hr = alarm.time.hr
-        val min = alarm.time.min
+    fun serRepeatingAlarm(alarm: Alarm): PendingIntent {
+        val hr = alarm.date?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+            .get(Calendar.HOUR_OF_DAY) // alarm.time.hr
+        val min = alarm.date?.get(Calendar.MINUTE) ?: Calendar.getInstance()
+            .get(Calendar.MINUTE)// alarm.time.min
 
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
@@ -80,14 +84,12 @@ class MyAlarmManager(context: Context) {
             alarmIntent
         )
 
-        return alarmManager
+        return alarmIntent
     }
 
-    private fun convertToMinute(hr: Int, min: Int): Int {
-        return (hr * 60) + min
-    }
 
-    fun cancelRepeatingAlarm(alarmManager: AlarmManager?) {
-        alarmManager?.cancel(this.alarmIntent)
+    // todo find a way to cancel the intent
+    fun cancelRepeatingAlarm(p: PendingIntent?) {
+        this.alarmManager.cancel(this.alarmIntent)
     }
 }

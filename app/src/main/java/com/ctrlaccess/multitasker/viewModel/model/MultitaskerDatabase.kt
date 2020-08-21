@@ -3,6 +3,7 @@ package com.ctrlaccess.multitasker.viewModel.model
 import android.content.Context
 import androidx.room.*
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
+import com.ctrlaccess.multitasker.viewModel.entities.Converters
 import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class MultitaskerDatabase : RoomDatabase() {
 
     abstract fun multitaskerDao(): MultitaskerDao

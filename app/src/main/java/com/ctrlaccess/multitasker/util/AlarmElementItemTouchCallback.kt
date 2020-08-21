@@ -29,6 +29,8 @@ class AlarmElementItemTouchCallback(
             val success = Fragment2Alarms.alarms.remove(alarm)
 
             if (success) {
+                // turn off alarm
+                MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
                 // delete alarm
                 MainActivity.multitaskViewModel.deleteAlarm(alarm)
                 Toast.makeText(
