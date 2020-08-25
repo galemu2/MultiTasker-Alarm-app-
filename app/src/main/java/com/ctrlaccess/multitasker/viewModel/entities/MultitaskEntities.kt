@@ -13,29 +13,40 @@ data class DaysOfWeek(
     var fri: Boolean = false,
     var sat: Boolean = false
 ) {
-//    @Ignore
-//    var weekDay = LongArray(7) { -1 }
 
     @Ignore
     val checkedDays = arrayOf(sun, mon, tue, wed, thurs, fri, sat)
 }
 
-//data class AlarmTime(
-//    var hr: Int,
-//    var min: Int
-//)
-
 class Converters {
 
     @TypeConverter
-    fun fromTimestamp(value:Long? ):Calendar?{
+    fun fromTimestamp(value: Long?): Calendar? {
         return Calendar.getInstance().apply {
             timeInMillis = value ?: System.currentTimeMillis()
         }
     }
 
     @TypeConverter
-    fun calendarToTimestamp(calendar:Calendar?):Long?{
+    fun calendarToTimestamp(calendar: Calendar?): Long? {
         return calendar?.timeInMillis
     }
 }
+
+//enum class Repeat {
+//    SINGLE {
+//        val single = 0
+//    },
+//
+//    WEEKLY {
+//        val weekly = 1
+//    },
+//
+//    BIWEEKLY {
+//        val bilweekly = 2
+//    },
+//
+//    MONTHLY {
+//        val monthly = 3
+//    }
+//}

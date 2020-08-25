@@ -58,7 +58,8 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         currentAlarmNote(holder.alarmNoteView, currentAlarm.alarmNote.toString())
         currentAlarmDaysOfWeek(holder, currentAlarm.days)
 
-        holder.alarmView.text = getTime(currentAlarm)
+        holder.alarmDateView.text = Alarm.dateFormat(Calendar.getInstance())
+        holder.alarmTimeView.text = getTime(currentAlarm)
 
         holder.checkBoxSunday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.sun = !currentAlarm.days.sun
@@ -130,7 +131,8 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
-        holder.itemView.setOnLongClickListener { view ->
+
+        holder.alarmTimeView.setOnLongClickListener { view ->
             updateAlarmAlertDialog(view, position)
             true
         }
@@ -224,7 +226,8 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     class AlarmsViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        val alarmView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
+        val alarmDateView :TextView = itemView.findViewById(R.id.textView_alarm_date)
+        val alarmTimeView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
         val alarmNoteView: EditText = itemView.findViewById(R.id.editText2_element_alarm_note)
 
         val checkBoxSunday: CheckBox = itemView.findViewById(R.id.checkBoxSunday)

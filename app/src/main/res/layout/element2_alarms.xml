@@ -16,27 +16,32 @@
         <TextView
             android:id="@+id/textView1_element_alarm_time"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:background="#00BCD4"
+            android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView1_element_alarm"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/layout_alarm_date"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:hint="11:22 pm" />
 
         <EditText
             android:id="@+id/editText2_element_alarm_note"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:autofillHints=""
+            android:background="#4CAF50"
             android:hint="@string/short_note"
             android:imeOptions="actionDone"
             android:inputType="textShortMessage"
@@ -45,22 +50,10 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/checkBoxThursday"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView1_element_alarm"
-            app:layout_constraintTop_toBottomOf="@+id/textView1_element_alarm_time" />
-
-        <ImageView
-            android:id="@+id/imageView1_element_alarm"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:contentDescription="@string/alarm_element"
-            app:layout_constraintBottom_toTopOf="@+id/checkBoxMonday"
-            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_access_time_24" />
+            app:layout_constraintTop_toBottomOf="@+id/textView1_element_alarm_time"
+            app:layout_constraintVertical_bias="1.0" />
 
         <CheckBox
             android:id="@+id/checkBoxMonday"
@@ -136,6 +129,82 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/checkBoxFriday" />
+
+        <LinearLayout
+            android:id="@+id/layout_alarm_date"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="#00BCD4"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/textView1_element_alarm_time"
+            app:layout_constraintEnd_toStartOf="@+id/layout_alarm_repeat"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView1_element_alarm_time"
+            app:layout_constraintTop_toTopOf="@+id/textView1_element_alarm_time">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:background="#283477"
+                android:gravity="center|start"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/next_alarm"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/textView_alarm_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#4A60DD"
+                android:gravity="center|start"
+                android:paddingStart="8dp"
+                android:textColor="#381477"
+                android:textColorHint="#381477"
+                android:textSize="12sp"
+                tools:hint="Sat Aug 22, 2020" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_alarm_repeat"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="#00BCD4"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_alarm_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/layout_alarm_date"
+            app:layout_constraintTop_toTopOf="@+id/layout_alarm_date">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="8dp"
+                android:background="#283477"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="Repeat rate
+"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,28 +6,26 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.ctrlaccess.multitasker.MainActivity
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity
 data class Alarm(
-
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
 
-//    @Embedded
-//    var time: AlarmTime,
+    var date: Calendar?,
 
     @Embedded
     val days: DaysOfWeek = DaysOfWeek(),
 
-    var date: Calendar?,
+//    var repeat: Repeat = Repeat.SINGLE,
 
     var alarmNote: String? = null,
 
     var isOn: Boolean = true,
 
     var scheduleListId: Long? = null
-
 
 ) {
 
@@ -55,6 +53,13 @@ data class Alarm(
                 }
             }
             return alarms
+        }
+
+        fun dateFormat(calendar: Calendar):String {
+
+            val s = SimpleDateFormat("EEE MMM dd, YYYY")
+return  s.format(Date(calendar.timeInMillis))
+
         }
     }
 }
