@@ -150,6 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
                 android:background="#283477"
                 android:gravity="center|start"
                 android:paddingStart="8dp"
@@ -161,11 +163,14 @@
                 android:id="@+id/textView_alarm_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:background="#4A60DD"
                 android:gravity="center|start"
                 android:paddingStart="8dp"
+                android:textAlignment="viewStart"
                 android:textColor="#381477"
                 android:textColorHint="#381477"
                 android:textSize="12sp"
@@ -192,6 +197,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
                 android:background="#283477"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
@@ -203,7 +210,8 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

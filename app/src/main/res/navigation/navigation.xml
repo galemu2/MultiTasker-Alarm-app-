@@ -40,4 +40,7 @@
     <fragment
         android:id="@+id/alert2CreateAlarms"
         android:label="alert2CreateAlarms" />
+    <fragment
+        android:id="@+id/alert3NextAlarmDate"
+        android:label="alert3NextAlarmDate" />
 </navigation>

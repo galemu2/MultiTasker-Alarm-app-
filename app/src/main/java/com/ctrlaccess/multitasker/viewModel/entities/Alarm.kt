@@ -55,10 +55,9 @@ data class Alarm(
             return alarms
         }
 
-        fun dateFormat(calendar: Calendar):String {
-
+        fun dateFormat(calendar: Calendar): String {
             val s = SimpleDateFormat("EEE MMM dd, YYYY")
-return  s.format(Date(calendar.timeInMillis))
+            return s.format(Date(calendar.timeInMillis))
 
         }
     }

@@ -6,7 +6,7 @@
 
     <color name="alarms_background">#F44336</color>
 
-    <color name="alarm_is_on">#FF2222</color>
+    <color name="alarm_is_on">#7e03a0</color>
     <color name="alarm_is_off">#6D8088</color>
 
     <color name="alert1_create_schedule">#B4FF5E</color>

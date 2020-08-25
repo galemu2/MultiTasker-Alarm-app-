@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ctrlaccess.multitasker.databinding.Alert2AlarmDialogBinding
+import com.ctrlaccess.multitasker.databinding.Alert2AlarmTimePickerBinding
+import com.ctrlaccess.multitasker.databinding.Alert3AlarmDatePickerBinding
 import com.ctrlaccess.multitasker.databinding.Fragment2AlarmsBinding
 import com.ctrlaccess.multitasker.util.AlarmElementItemTouchCallback
 import com.ctrlaccess.multitasker.util.RecyclerView2AlarmsAdaptor
@@ -35,11 +36,18 @@ class Fragment2Alarms : Fragment() {
         lateinit var binding: Fragment2AlarmsBinding
         lateinit var args: Fragment2AlarmsArgs
 
-        fun alert2Binding(context: Context): Alert2AlarmDialogBinding {
+        fun alert2Binding(context: Context): Alert2AlarmTimePickerBinding {
             return DataBindingUtil.inflate(
-                LayoutInflater.from(context), R.layout.alert2_alarm_dialog, null, false
+                LayoutInflater.from(context), R.layout.alert2_alarm_time_picker, null, false
             )
         }
+
+        fun alert3Binding(context: Context): Alert3AlarmDatePickerBinding {
+            return DataBindingUtil.inflate(
+                LayoutInflater.from(context), R.layout.alert3_alarm_date_picker, null, false
+            )
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

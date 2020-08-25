@@ -40,7 +40,6 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             false
         )
 
-//        val view = inflater.inflate(R.layout.element2_alarms, parent, false)
         return AlarmsViewHolder(binding.root)
     }
 
@@ -58,7 +57,9 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         currentAlarmNote(holder.alarmNoteView, currentAlarm.alarmNote.toString())
         currentAlarmDaysOfWeek(holder, currentAlarm.days)
 
-        holder.alarmDateView.text = Alarm.dateFormat(Calendar.getInstance())
+        val alarmDate = currentAlarm.date ?: Calendar.getInstance()
+
+        holder.alarmDateView.text = Alarm.dateFormat(alarmDate)
         holder.alarmTimeView.text = getTime(currentAlarm)
 
         holder.checkBoxSunday.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -136,6 +137,13 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             updateAlarmAlertDialog(view, position)
             true
         }
+
+        holder.alarmDateWrapper.setOnLongClickListener { view ->
+            updateAlarmDateAlertDialog(view, position)
+            true
+        }
+
+
     }
 
 
@@ -176,6 +184,32 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
 
         }
+    }
+
+    private fun updateAlarmDateAlertDialog(view: View, position: Int) {
+        val bindingDate = Fragment2Alarms.alert3Binding(view.context)
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
+
+        builder.setPositiveButton(R.string.update) { dialog, which ->
+            val oldAlarms = Fragment2Alarms.alarms.get(position)
+            val date = Calendar.getInstance().apply {
+                set(Calendar.YEAR, bindingDate.datePicker.year)
+                set(Calendar.MONTH, bindingDate.datePicker.month)
+                set(Calendar.DAY_OF_MONTH, bindingDate.datePicker.dayOfMonth)
+            }
+            oldAlarms.date = date
+            MainActivity.multitaskViewModel.updateAlarm(oldAlarms)
+            notifyDataSetChanged()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(R.string.cancel_create) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.setView(bindingDate.root)
+        builder.create().show()
     }
 
     private fun updateAlarmAlertDialog(view: View, position: Int) {
@@ -226,7 +260,12 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     class AlarmsViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        val alarmDateView :TextView = itemView.findViewById(R.id.textView_alarm_date)
+        val alarmDateView: TextView = itemView.findViewById(R.id.textView_alarm_date)
+        val alarmDateWrapper: LinearLayout = itemView.findViewById(R.id.layout_alarm_date)
+
+        val alarmRepeat: LinearLayout = itemView.findViewById(R.id.layout_alarm_repeat)
+
+
         val alarmTimeView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
         val alarmNoteView: EditText = itemView.findViewById(R.id.editText2_element_alarm_note)
 
