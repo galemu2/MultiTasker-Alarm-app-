@@ -1,4 +1,4 @@
-package com.ctrlaccess.multitasker.alarm
+package com.ctrlaccess.multitasker.viewModel.model.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context

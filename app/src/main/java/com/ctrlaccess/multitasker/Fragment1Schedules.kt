@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -54,8 +55,7 @@ open class Fragment1Schedules : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment1_schedules, container, false)
+
         binding = DataBindingUtil.inflate<Fragment1SchedulesBinding>(
             inflater, R.layout.fragment1_schedules,
             container, false
@@ -72,6 +72,35 @@ open class Fragment1Schedules : Fragment() {
         recyclerViewSchedulesAdaptor = RecyclerView1SchedulesAdaptor(requireContext())
         recyclerViewLists.adapter = recyclerViewSchedulesAdaptor
         recyclerViewLists.layoutManager = LinearLayoutManager(requireContext())
+
+        recyclerViewSchedulesAdaptor.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkEmpty()
+            }
+
+            fun checkEmpty() {
+                val empty = recyclerViewSchedulesAdaptor.itemCount == 0
+
+                if (empty) {
+                    recyclerViewLists.visibility = View.GONE
+                    binding.emptyView.visibility = View.VISIBLE
+                } else {
+                    binding.emptyView.visibility = View.GONE
+                    recyclerViewLists.visibility = View.VISIBLE
+                }
+
+            }
+        })
+        if (recyclerViewLists.isEmpty()) {
+            recyclerViewLists.visibility = View.GONE
+            binding.emptyView.visibility = View.VISIBLE
+
+        } else {
+            recyclerViewLists.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+        }
 
         val itemTouchCallback = ScheduleElementItemTouchCallback(this)
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)

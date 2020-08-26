@@ -10,19 +10,40 @@
 
         tools:context=".Fragment2Alarms">
 
+<!--        <TextView
+            android:id="@+id/textClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text clock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
         <TextClock
             android:id="@+id/textClock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-condensed"
+            android:format12Hour="dd.MM.yyyy \t\t\thh:mm a"
             android:textColor="#0F3CBA"
             android:textSize="18sp"
-            android:format12Hour="dd.MM.yyyy \t\t\thh:mm a"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:hint="11:22:33" />
+
+        <ImageView
+            android:id="@+id/empty_alarm_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="24dp"
+            android:foregroundGravity="center"
+            android:padding="16dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/recyclerView_lists"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_note_book" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_alarms"

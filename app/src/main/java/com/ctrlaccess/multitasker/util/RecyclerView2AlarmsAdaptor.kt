@@ -53,12 +53,11 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     ) {
         val currentAlarm = alarms[position]
 
+        // update current status
         currentAlarmOnOff(holder, currentAlarm)
         currentAlarmNote(holder.alarmNoteView, currentAlarm.alarmNote.toString())
         currentAlarmDaysOfWeek(holder, currentAlarm.days)
-
         val alarmDate = currentAlarm.date ?: Calendar.getInstance()
-
         holder.alarmDateView.text = Alarm.dateFormat(alarmDate)
         holder.alarmTimeView.text = getTime(currentAlarm)
         holder.alarmSpinnerRepeat.setSelection(currentAlarm.repeatMode)
@@ -280,7 +279,6 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
         val alarmSpinnerRepeat: Spinner = itemView.findViewById(R.id.spinner_repeat_choices)
 
-
         val s = ArrayAdapter.createFromResource(
             itemView.context,
             R.array.spinner_repeat_choices,
@@ -288,6 +286,8 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         ).also {
             alarmSpinnerRepeat.adapter = it
         }
+
+
         val alarmTimeView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
         val alarmNoteView: EditText = itemView.findViewById(R.id.editText2_element_alarm_note)
 
@@ -303,14 +303,6 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
     }
 
-/*    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Log.d(TAG, "position: $position")
-
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }*/
 }
 
 

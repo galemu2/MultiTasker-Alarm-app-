@@ -76,6 +76,25 @@ class Fragment2Alarms : Fragment() {
 
         recyclerViewAlarms.adapter = recyclerView2AlarmsAdaptor
         recyclerViewAlarms.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView2AlarmsAdaptor.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkEmpty()
+            }
+
+            fun checkEmpty() {
+                val empty = recyclerView2AlarmsAdaptor.itemCount == 0
+
+                if (empty) {
+                    recyclerViewAlarms.visibility = View.GONE
+                    binding.emptyAlarmView.visibility = View.VISIBLE
+                } else {
+                    recyclerViewAlarms.visibility = View.VISIBLE
+                    binding.emptyAlarmView.visibility = View.GONE
+                }
+            }
+        })
 
         val itemTouchCallback =
             AlarmElementItemTouchCallback(recyclerView2AlarmsAdaptor)
@@ -85,7 +104,6 @@ class Fragment2Alarms : Fragment() {
         (activity as ToolbarTitleChangeListener).showMenu()
 
         if (args.scheduleID > 0) {
-            Log.d("TAG", "scheduleID: ${args.scheduleID}")
             alarms =
                 MainActivity.multitaskViewModel.getAllAlarms(args.scheduleID) as ArrayList<Alarm>
             recyclerView2AlarmsAdaptor.setAlarms(alarms)

@@ -58,8 +58,7 @@ class MultitaskerViewModel(application: Application) :
     fun updateAlarm(alarms: Alarm) {
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.updateAlarm(alarms)
-            Log.d(TAG, "updated ... ")
-        }
+         }
     }
 
     fun deleteAlarm(alarm: Alarm) {

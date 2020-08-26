@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.ctrlaccess.multitasker.alarm.MyAlarmManager
+import com.ctrlaccess.multitasker.viewModel.model.alarm.MyAlarmManager
 import com.ctrlaccess.multitasker.databinding.ActivityMainBinding
 import com.ctrlaccess.multitasker.viewModel.MultitaskerViewModel
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
