@@ -28,6 +28,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<Alarm>()
     lateinit var binding: ViewDataBinding
+    private val TAG = "TAG"
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,7 +40,6 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             parent,
             false
         )
-
         return AlarmsViewHolder(binding.root)
     }
 
@@ -61,48 +61,41 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
         holder.alarmDateView.text = Alarm.dateFormat(alarmDate)
         holder.alarmTimeView.text = getTime(currentAlarm)
+        holder.alarmSpinnerRepeat.setSelection(currentAlarm.repeatMode)
+
 
         holder.checkBoxSunday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.sun = !currentAlarm.days.sun
-
-            Log.d("TAG", Arrays.toString(currentAlarm.days.checkedDays))
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxMonday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.mon = !currentAlarm.days.mon
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxTuesday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.tue = !currentAlarm.days.tue
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxWednesday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.wed = !currentAlarm.days.wed
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxThursday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.thurs = !currentAlarm.days.thurs
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxFriday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.fri = !currentAlarm.days.fri
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
         holder.checkBoxSaturday.setOnCheckedChangeListener { buttonView, isChecked ->
             currentAlarm.days.sat = !currentAlarm.days.sat
-
             MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
         }
 
@@ -143,6 +136,28 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             true
         }
 
+        var tmpPos = -1
+        holder.alarmSpinnerRepeat.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (position != tmpPos) {
+                        currentAlarm.repeatMode = position
+                        tmpPos = position
+                        MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
+                        notifyDataSetChanged()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+            }
 
     }
 
@@ -263,9 +278,16 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val alarmDateView: TextView = itemView.findViewById(R.id.textView_alarm_date)
         val alarmDateWrapper: LinearLayout = itemView.findViewById(R.id.layout_alarm_date)
 
-        val alarmRepeat: LinearLayout = itemView.findViewById(R.id.layout_alarm_repeat)
+        val alarmSpinnerRepeat: Spinner = itemView.findViewById(R.id.spinner_repeat_choices)
 
 
+        val s = ArrayAdapter.createFromResource(
+            itemView.context,
+            R.array.spinner_repeat_choices,
+            R.layout.spinner_repeat_list
+        ).also {
+            alarmSpinnerRepeat.adapter = it
+        }
         val alarmTimeView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
         val alarmNoteView: EditText = itemView.findViewById(R.id.editText2_element_alarm_note)
 
@@ -277,8 +299,19 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val checkBoxFriday: CheckBox = itemView.findViewById(R.id.checkBoxFriday)
         val checkBoxSaturday: CheckBox = itemView.findViewById(R.id.checkBoxSaturday)
 
+
         val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
     }
+
+/*    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.d(TAG, "position: $position")
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }*/
 }
+
 
 

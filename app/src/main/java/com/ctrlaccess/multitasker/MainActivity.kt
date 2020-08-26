@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
         multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
         myAlarmManager = MyAlarmManager(this)
 
+
+
     }
 
     override fun updateTitle(newTitle: String, newSubTitle: String?) {

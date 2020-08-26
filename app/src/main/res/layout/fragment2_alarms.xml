@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment2Container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/alarms_background">
+        android:background="@color/alarms_background"
+
+        tools:context=".Fragment2Alarms">
 
         <TextClock
             android:id="@+id/textClock"
@@ -17,6 +18,7 @@
             android:fontFamily="sans-serif-condensed"
             android:textColor="#0F3CBA"
             android:textSize="18sp"
+            android:format12Hour="dd.MM.yyyy \t\t\thh:mm a"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

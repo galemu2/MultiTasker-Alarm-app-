@@ -13,27 +13,18 @@ import java.util.*
 data class Alarm(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
-
     var date: Calendar?,
-
     @Embedded
     val days: DaysOfWeek = DaysOfWeek(),
-
-//    var repeat: Repeat = Repeat.SINGLE,
-
     var alarmNote: String? = null,
-
     var isOn: Boolean = true,
-
-    var scheduleListId: Long? = null
-
+    var scheduleListId: Long? = null,
+    var repeatMode:Int = 0
 ) {
-
     @Ignore
     var pendingIntent: PendingIntent? = null
 
     companion object {
-
         fun alarmsOnOff(alarms: List<Alarm>, scheduleIsOn: Boolean) {
             alarms.forEach { alarm ->
                 alarm.isOn = scheduleIsOn
@@ -58,7 +49,6 @@ data class Alarm(
         fun dateFormat(calendar: Calendar): String {
             val s = SimpleDateFormat("EEE MMM dd, YYYY")
             return s.format(Date(calendar.timeInMillis))
-
         }
     }
 }

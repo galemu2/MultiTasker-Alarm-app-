@@ -199,19 +199,27 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="2dp"
-                android:background="#283477"
+                android:background="#1B3CF3"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text="Repeat rate
-"
+                android:text="@string/repeat"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+<!--                android:entries="@array/spinner_repeat_choices"
+-->
+            <Spinner
+                android:id="@+id/spinner_repeat_choices"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="12sp" />
+                android:layout_gravity="center|start"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:background="#CA5757"
+                android:gravity="center|start"
+                android:spinnerMode="dropdown"
+                tools:entries="@array/spinner_repeat_choices"
+                />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

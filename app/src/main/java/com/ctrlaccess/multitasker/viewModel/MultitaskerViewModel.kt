@@ -1,6 +1,7 @@
 package com.ctrlaccess.multitasker.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -20,7 +21,7 @@ class MultitaskerViewModel(application: Application) :
     private val alarmsRepository: AlarmsRepository
     private val scheduleRepository: ScheduleRepository
     private val multitaskerRepository: MultitaskerRepository
-
+    private val TAG = "TAG"
     val allSchedules: LiveData<List<Schedule>>
 
     init {
@@ -47,7 +48,7 @@ class MultitaskerViewModel(application: Application) :
     fun insertAlarm(alarm: Alarm): Long {
         var out = -1L
         viewModelScope.run {
-            runBlocking(Dispatchers.IO){
+            runBlocking(Dispatchers.IO) {
                 out = alarmsRepository.insertAlarm(alarm)
             }
         }
@@ -57,11 +58,12 @@ class MultitaskerViewModel(application: Application) :
     fun updateAlarm(alarms: Alarm) {
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.updateAlarm(alarms)
+            Log.d(TAG, "updated ... ")
         }
     }
 
     fun deleteAlarm(alarm: Alarm) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.deleteAlarm(alarm)
         }
 
@@ -73,11 +75,12 @@ class MultitaskerViewModel(application: Application) :
         }
     }
 
-    fun updateSchedule(schedule: Schedule){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateSchedule(schedule: Schedule) {
+        viewModelScope.launch(Dispatchers.IO) {
             scheduleRepository.updateSchedule(schedule)
         }
     }
+
     fun insertAlarms(alarms: List<Alarm>): List<Long> {
         var out = emptyList<Long>()
         viewModelScope.run {

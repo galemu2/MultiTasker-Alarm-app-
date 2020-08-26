@@ -28,9 +28,10 @@
     <string name="update">update</string>
     <string name="edit">edit</string>
     <string name="next_alarm">Next Alarm</string>
+    <string name="repeat">repeat</string>
 
     <!--todo used in spinner for repeat mode selection-->
-    <string-array name="repeat_choices">
+    <string-array name="spinner_repeat_choices">
         <item>single</item>
         <item>weekly</item>
         <item>biweekly</item>
