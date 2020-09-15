@@ -30,9 +30,9 @@ class ScheduleElementItemTouchCallback(
 
         // swipe and delete schedule and associated alarms
         val alarms = MainActivity.multitaskViewModel.getAllAlarms(scheduleId)
-        // cancel alarm
+        // todo cancel alarm
         alarms.forEach { alarm ->
-            MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
+
         }
 
         MainActivity.multitaskViewModel.deleteAllAlarms(scheduleId)

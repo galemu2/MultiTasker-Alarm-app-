@@ -30,8 +30,7 @@ class AlarmElementItemTouchCallback(
 
             if (success) {
                 // turn off alarm
-                MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
-                // delete alarm
+                 // delete alarm
                 MainActivity.multitaskViewModel.deleteAlarm(alarm)
                 Toast.makeText(
                     viewHolder.itemView.context,

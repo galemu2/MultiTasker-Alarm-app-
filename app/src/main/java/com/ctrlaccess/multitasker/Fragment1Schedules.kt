@@ -21,6 +21,8 @@ import com.ctrlaccess.multitasker.databinding.Fragment1SchedulesBinding
 import com.ctrlaccess.multitasker.util.RecyclerView1SchedulesAdaptor
 import com.ctrlaccess.multitasker.util.ScheduleElementItemTouchCallback
 import com.ctrlaccess.multitasker.viewModel.entities.Schedule
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -116,12 +118,13 @@ open class Fragment1Schedules : Fragment() {
         // todo button is used to check database
         binding.buttonAllData.setOnClickListener {
 
-            val alarms = MainActivity.multitaskViewModel.getAllAlarmsChecker()
-            Log.d("TAG", "  ")
-            Log.d("TAG", alarms.toString())
-            Log.d("TAG", "  ")
-            val schedules = MainActivity.multitaskViewModel.getAllSchedulesChecker()
-            Log.d("TAG", schedules.toString())
+            val alarms = MainActivity.multitaskViewModel.getAllAlarmsInDatabase()
+             Log.d("TAG Alarms: ", alarms.toString())
+            alarms.forEach { alarm ->
+                Log.d("TAG each Alarm: ", Date(alarm.date?.timeInMillis ?: 0L).toString())
+            }
+             val schedules = MainActivity.multitaskViewModel.getAllSchedulesChecker()
+            Log.d("TAG Schedule: ", schedules.toString())
 
         }
         return binding.root

@@ -2,7 +2,6 @@ package com.ctrlaccess.multitasker.viewModel.model
 
 import androidx.lifecycle.LiveData
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
-import com.ctrlaccess.multitasker.viewModel.entities.AlarmsInSchedule
 import com.ctrlaccess.multitasker.viewModel.entities.Schedule
 
 class MultitaskerRepository(private val multitaskerDao: MultitaskerDao) {
@@ -79,7 +78,7 @@ class AlarmsRepository(private val alarmDao: AlarmDao) {
     }
 
     // used for development purposes only
-    fun getAllAlarmsChecker(): List<Alarm> {
-        return alarmDao.getAllAlarmsChecker()
+    fun getAllAlarmsInDatabase(): List<Alarm> {
+        return alarmDao.getAllAlarmsInDatabase()
     }
 }

@@ -128,6 +128,8 @@ class Fragment2Alarms : Fragment() {
                 timeInMillis = System.currentTimeMillis()
                 set(Calendar.HOUR_OF_DAY, bindingAlert.timePicker.currentHour)
                 set(Calendar.MINUTE, bindingAlert.timePicker.currentMinute)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }
             val alarm = Alarm(date = dayTime)
 

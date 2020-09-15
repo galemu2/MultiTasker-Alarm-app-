@@ -28,7 +28,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var alarms = emptyList<Alarm>()
     lateinit var binding: ViewDataBinding
-    private val TAG = "TAG"
+    private val TAG = "RecyclerView2"
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -52,6 +52,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         position: Int
     ) {
         val currentAlarm = alarms[position]
+
 
         // update current status
         currentAlarmOnOff(holder, currentAlarm)
@@ -113,7 +114,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
         holder.itemView.setOnClickListener {
             currentAlarm.isOn = !currentAlarm.isOn
-
+            Log.d(TAG, " .. checking ...")
             currentAlarmOnOff(holder, currentAlarm)
             val on_off = if (currentAlarm.isOn) "On" else "Off"
             Toast.makeText(
@@ -126,7 +127,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
 
         holder.alarmTimeView.setOnLongClickListener { view ->
-            updateAlarmAlertDialog(view, position)
+            updateAlarmTimeAlertDialog(view, position)
             true
         }
 
@@ -145,6 +146,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                     position: Int,
                     id: Long
                 ) {
+                    Log.d(TAG, "spinner position: $position")
                     if (position != tmpPos) {
                         currentAlarm.repeatMode = position
                         tmpPos = position
@@ -157,6 +159,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                 }
 
             }
+
 
     }
 
@@ -188,14 +191,12 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                     R.color.alarm_is_on
                 )
             )
-            MainActivity.myAlarmManager.serRepeatingAlarm(alarm)
-        } else {
+         } else {
             holder.container.setBackgroundColor(
                 holder.container.context.resources.getColor(
                     R.color.alarm_is_off
                 )
             )
-            MainActivity.myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
 
         }
     }
@@ -206,16 +207,28 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
 
         builder.setPositiveButton(R.string.update) { dialog, which ->
-            val oldAlarms = Fragment2Alarms.alarms.get(position)
+            val oldAlarms = Fragment2Alarms.alarms[position]
             val date = Calendar.getInstance().apply {
                 set(Calendar.YEAR, bindingDate.datePicker.year)
                 set(Calendar.MONTH, bindingDate.datePicker.month)
                 set(Calendar.DAY_OF_MONTH, bindingDate.datePicker.dayOfMonth)
+                set(
+                    Calendar.HOUR_OF_DAY,
+                    oldAlarms.date?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+                        .get(Calendar.HOUR_OF_DAY)
+                )
+                set(
+                    Calendar.MINUTE,
+                    oldAlarms.date?.get(Calendar.MINUTE) ?: Calendar.getInstance()
+                        .get(Calendar.MINUTE)
+                )
+                set(Calendar.SECOND, 0)
             }
+            Log.d(TAG, "set date: ${Date(date.timeInMillis)}")
             oldAlarms.date = date
             MainActivity.multitaskViewModel.updateAlarm(oldAlarms)
             notifyDataSetChanged()
-            dialog.dismiss()
+            //dialog.dismiss()
         }
 
         builder.setNegativeButton(R.string.cancel_create) { dialog, which ->
@@ -226,7 +239,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         builder.create().show()
     }
 
-    private fun updateAlarmAlertDialog(view: View, position: Int) {
+    private fun updateAlarmTimeAlertDialog(view: View, position: Int) {
 
         val bindingAlarm =
             Fragment2Alarms.alert2Binding(view.context)
@@ -236,11 +249,26 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         builder.setPositiveButton(R.string.update) { dialog, whick ->
 
             val oldAlarm = Fragment2Alarms.alarms.get(position)
+            val todayDate = Calendar.getInstance()
             val dateTime = Calendar.getInstance().apply {
-                timeInMillis = System.currentTimeMillis()
+                set(
+                    Calendar.YEAR,
+                    oldAlarm.date?.get(Calendar.YEAR) ?: todayDate.get(Calendar.YEAR)
+                )
+                set(
+                    Calendar.MONTH,
+                    oldAlarm.date?.get(Calendar.MONTH) ?: todayDate.get(Calendar.MONTH)
+                )
+                set(
+                    Calendar.DAY_OF_MONTH,
+                    oldAlarm.date?.get(Calendar.DAY_OF_MONTH)
+                        ?: todayDate.get(Calendar.DAY_OF_MONTH)
+                )
                 set(Calendar.HOUR_OF_DAY, bindingAlarm.timePicker.currentHour)
                 set(Calendar.MINUTE, bindingAlarm.timePicker.currentMinute)
+                set(Calendar.SECOND, 0)
             }
+            Log.d(TAG  , "set time: "+Date(dateTime.timeInMillis).toString())
             oldAlarm.date = dateTime
             MainActivity.multitaskViewModel.updateAlarm(oldAlarm)
             notifyDataSetChanged()
@@ -278,15 +306,13 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val alarmDateWrapper: LinearLayout = itemView.findViewById(R.id.layout_alarm_date)
 
         val alarmSpinnerRepeat: Spinner = itemView.findViewById(R.id.spinner_repeat_choices)
-
         val s = ArrayAdapter.createFromResource(
             itemView.context,
             R.array.spinner_repeat_choices,
             R.layout.spinner_repeat_list
-        ).also {
-            alarmSpinnerRepeat.adapter = it
+        ).also { adapter ->
+            alarmSpinnerRepeat.adapter = adapter
         }
-
 
         val alarmTimeView: TextView = itemView.findViewById(R.id.textView1_element_alarm_time)
         val alarmNoteView: EditText = itemView.findViewById(R.id.editText2_element_alarm_note)

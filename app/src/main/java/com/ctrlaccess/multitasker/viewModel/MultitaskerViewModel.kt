@@ -1,7 +1,6 @@
 package com.ctrlaccess.multitasker.viewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -134,11 +133,11 @@ class MultitaskerViewModel(application: Application) :
         return outList
     }
 
-    fun getAllAlarmsChecker(): List<Alarm> {
+    fun getAllAlarmsInDatabase(): List<Alarm> {
         var outAlarms = emptyList<Alarm>()
         viewModelScope.run {
             runBlocking(Dispatchers.IO) {
-                outAlarms = alarmsRepository.getAllAlarmsChecker()
+                outAlarms = alarmsRepository.getAllAlarmsInDatabase()
             }
         }
         return outAlarms

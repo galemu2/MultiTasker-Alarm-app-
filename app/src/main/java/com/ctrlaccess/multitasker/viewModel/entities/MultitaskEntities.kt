@@ -14,8 +14,21 @@ data class DaysOfWeek(
     var sat: Boolean = false
 ) {
 
+    // this is useless
     @Ignore
     val checkedDays = arrayOf(sun, mon, tue, wed, thurs, fri, sat)
+
+    fun get(day: Int) {
+        when (day) {
+            1 -> this.sun
+            2 -> this.mon
+            3 -> this.tue
+            4 -> this.wed
+            5 -> this.thurs
+            6 -> this.fri
+            7 -> this.sat
+        }
+    }
 }
 
 class Converters {
@@ -33,20 +46,3 @@ class Converters {
     }
 }
 
-//enum class Repeat {
-//    SINGLE {
-//        val single = 0
-//    },
-//
-//    WEEKLY {
-//        val weekly = 1
-//    },
-//
-//    BIWEEKLY {
-//        val bilweekly = 2
-//    },
-//
-//    MONTHLY {
-//        val monthly = 3
-//    }
-//}

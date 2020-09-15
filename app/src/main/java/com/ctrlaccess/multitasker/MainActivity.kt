@@ -28,10 +28,11 @@ interface ToolbarTitleChangeListener {
 class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
+    private val TAG = "MainActivity"
 
     companion object {
         lateinit var multitaskViewModel: MultitaskerViewModel
-          lateinit var myAlarmManager: MyAlarmManager
+        lateinit var myAlarmManager: MyAlarmManager
 
     }
 
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
 
         multitaskViewModel = ViewModelProvider(this).get(MultitaskerViewModel::class.java)
         myAlarmManager = MyAlarmManager(this)
-
 
 
     }
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         multitaskViewModel.insertAlarms(newAlarms)
 
 
-                        //
+                        // update existing alarm and/or add alarm
                     } else {
 
                         val updatedAlarms =
@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         multitaskViewModel.insertAlarms(updatedAlarms)
                         multitaskViewModel.updateSchedule(newSchedule)
                         // multitaskViewModel.updateAlarms(newAlarms)
+                        Log.d(TAG+" inserted schedule: ", newSchedule.toString())
 
                     }
                     Toast.makeText(
@@ -124,28 +125,28 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                     Toast.makeText(applicationContext, "no alarms added", Toast.LENGTH_SHORT).show()
                 }
 
+
+                // todo gets all alarms and sets the alarm manager based on the alarms
+                var allAlarms: List<Alarm>? = null
+
+                runBlocking {
+                    val job: Job = launch(Dispatchers.Default) {
+                        allAlarms = multitaskViewModel.getAllAlarmsInDatabase()
+                    }
+                    job.join()
+                    allAlarms?.forEach { alarm ->
+                        // set alarms manager for each alarm
+                        // todo cancel other alarms and reschedule
+                         myAlarmManager.serRepeatingAlarm(alarm)
+
+                    }
+                }
+
                 // 5. navigate to Fragment1
                 Fragment2Alarms.binding.root.findNavController()
                     .navigate(Fragment2AlarmsDirections.actionFragment2AlarmsToFragment1Schedules())
 
-                // todo gets all alarms and sets the alarm manager based on the alarms
-                var allAlarmss: List<Alarm>? = null
 
-                runBlocking {
-                    val job: Job = launch(Dispatchers.Default) {
-                        allAlarmss = multitaskViewModel.getAllAlarmsChecker()
-                    }
-                    job.join()
-                    allAlarmss?.forEach { alarm ->
-                        if (alarm.pendingIntent != null) {
-
-
-                            myAlarmManager.cancelRepeatingAlarm(alarm.pendingIntent)
-                        }
-                        alarm.pendingIntent = myAlarmManager.serRepeatingAlarm(alarm)
-                        Log.d("ALARM", "pendingIntent: ${alarm.pendingIntent.toString()}")
-                    }
-                }
                 true
             }
             else -> {

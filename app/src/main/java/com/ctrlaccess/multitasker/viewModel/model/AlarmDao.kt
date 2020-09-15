@@ -33,5 +33,5 @@ interface AlarmDao {
     fun insertAlarms(alarms: List<Alarm>): List<Long>
 
     @Query("SELECT * from Alarm")
-    fun getAllAlarmsChecker():List<Alarm>
+    fun getAllAlarmsInDatabase():List<Alarm>
 }
