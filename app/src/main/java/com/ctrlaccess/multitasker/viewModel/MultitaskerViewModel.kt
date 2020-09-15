@@ -1,6 +1,7 @@
 package com.ctrlaccess.multitasker.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -57,7 +58,7 @@ class MultitaskerViewModel(application: Application) :
     fun updateAlarm(alarms: Alarm) {
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.updateAlarm(alarms)
-         }
+        }
     }
 
     fun deleteAlarm(alarm: Alarm) {
@@ -68,15 +69,25 @@ class MultitaskerViewModel(application: Application) :
     }
 
     fun updateAlarms(alarms: List<Alarm>) {
+
+
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.updateAlarm(alarms)
         }
     }
 
-    fun updateSchedule(schedule: Schedule) {
-        viewModelScope.launch(Dispatchers.IO) {
-            scheduleRepository.updateSchedule(schedule)
+    fun updateSchedule(schedule: Schedule):Int {
+        var out:Int = -1
+        viewModelScope.run {
+            runBlocking(Dispatchers.IO) {
+                out = scheduleRepository.updateSchedule(schedule)
+                Log.d(TAG, "updated schedules: $out")
+            }
         }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            scheduleRepository.updateSchedule(schedule)
+//        }
+        return out
     }
 
     fun insertAlarms(alarms: List<Alarm>): List<Long> {

@@ -13,7 +13,7 @@ interface ScheduleDao {
 
     //update the schedule
     @Update
-    fun updateSchedule(scheduleList: Schedule)
+    fun updateSchedule(scheduleList: Schedule):Int
 
     // delete the schedule and all the associated alarms
     @Delete

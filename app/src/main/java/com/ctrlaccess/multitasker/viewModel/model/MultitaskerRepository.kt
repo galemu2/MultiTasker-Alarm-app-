@@ -21,8 +21,8 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
         return scheduleDao.insertSchedule(schedule)
     }
 
-    fun updateSchedule(schedule: Schedule) {
-        scheduleDao.updateSchedule(schedule)
+    fun updateSchedule(schedule: Schedule):Int {
+        return scheduleDao.updateSchedule(schedule)
     }
 
     // used for development purposes only
