@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-condensed"
-            android:format12Hour="dd.MM.yyyy \t\t\thh:mm a"
+            android:format12Hour="EEE MMM dd, yyyy\t\thh:mm a"
             android:textColor="#0F3CBA"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"

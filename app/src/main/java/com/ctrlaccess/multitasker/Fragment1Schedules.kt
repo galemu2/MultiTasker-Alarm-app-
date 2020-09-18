@@ -121,7 +121,7 @@ open class Fragment1Schedules : Fragment() {
             val alarms = MainActivity.multitaskViewModel.getAllAlarmsInDatabase()
              Log.d("TAG Alarms: ", alarms.toString())
             alarms.forEach { alarm ->
-                Log.d("TAG each Alarm: ", Date(alarm.date?.timeInMillis ?: 0L).toString())
+                Log.d("TAG each Alarm: ", Date(alarm.calDate?.timeInMillis ?: 0L).toString())
             }
              val schedules = MainActivity.multitaskViewModel.getAllSchedulesChecker()
             Log.d("TAG Schedule: ", schedules.toString())

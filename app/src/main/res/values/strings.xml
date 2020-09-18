@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Multitasker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="button">Button</string>
 
     <string name="create">Create</string>
@@ -30,8 +29,7 @@
     <string name="next_alarm">Next Alarm</string>
     <string name="repeat">repeat</string>
 
-    <!--todo used in spinner for repeat mode selection-->
-    <string-array name="spinner_repeat_choices">
+     <string-array name="spinner_repeat_choices">
         <item>single</item>
         <item>weekly</item>
         <item>biweekly</item>

@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 data class Alarm(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
-    var date: Calendar?,
+    var calDate: Calendar?,
     @Embedded
     val days: DaysOfWeek = DaysOfWeek(),
     var alarmNote: String? = null,
@@ -61,9 +61,10 @@ data class Alarm(
         val selectedDays = arrayListOf<Int>()
         this.days.checkedDays.forEachIndexed { index, selected ->
             if (selected) {
-                selectedDays.add(index)
+                selectedDays.add(index + 1)
             }
         }
+        Log.d(TAG, "selected days: "+selectedDays.toString())
         return selectedDays
     }
 }

@@ -131,7 +131,7 @@ class Fragment2Alarms : Fragment() {
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }
-            val alarm = Alarm(date = dayTime)
+            val alarm = Alarm(calDate = dayTime)
 
             alarms.add(alarm)
             recyclerView2AlarmsAdaptor.setAlarms(alarms)

@@ -111,8 +111,6 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                         multitaskViewModel.insertAlarms(updatedAlarms)
                         newSchedule.scheduleId = Fragment2Alarms.args.scheduleID
                         multitaskViewModel.updateSchedule(newSchedule)
-                        // multitaskViewModel.updateAlarms(newAlarms)
-                        Log.d(TAG ,"Inserted schedule: "+ newSchedule.toString())
 
                     }
                     Toast.makeText(
@@ -138,7 +136,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                     allAlarms?.forEach { alarm ->
                         // set alarms manager for each alarm
                         // todo cancel other alarms and reschedule
-                        // myAlarmManager.serRepeatingAlarm(alarm)
+                         myAlarmManager.serRepeatingAlarm(alarm)
 
                     }
                 }

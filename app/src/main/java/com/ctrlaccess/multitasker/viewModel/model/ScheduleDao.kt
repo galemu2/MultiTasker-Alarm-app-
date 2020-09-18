@@ -12,8 +12,8 @@ interface ScheduleDao {
     fun insertSchedule(scheduleList: Schedule): Long
 
     //update the schedule
-    @Update
-    fun updateSchedule(scheduleList: Schedule):Int
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateSchedule(scheduleList: Schedule): Int
 
     // delete the schedule and all the associated alarms
     @Delete
@@ -24,5 +24,5 @@ interface ScheduleDao {
     fun getAllSchedules(): LiveData<List<Schedule>>
 
     @Query("SELECT * FROM Schedule")
-    fun getAllSchedulesChecker():List<Schedule>
+    fun getAllSchedulesChecker(): List<Schedule>
 }

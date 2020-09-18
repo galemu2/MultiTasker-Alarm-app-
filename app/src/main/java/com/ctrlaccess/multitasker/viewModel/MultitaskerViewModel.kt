@@ -70,7 +70,6 @@ class MultitaskerViewModel(application: Application) :
 
     fun updateAlarms(alarms: List<Alarm>) {
 
-
         viewModelScope.launch(Dispatchers.IO) {
             alarmsRepository.updateAlarm(alarms)
         }
@@ -81,12 +80,9 @@ class MultitaskerViewModel(application: Application) :
         viewModelScope.run {
             runBlocking(Dispatchers.IO) {
                 out = scheduleRepository.updateSchedule(schedule)
-                Log.d(TAG, "updated schedules: $out")
             }
         }
-//        viewModelScope.launch(Dispatchers.IO) {
-//            scheduleRepository.updateSchedule(schedule)
-//        }
+
         return out
     }
 

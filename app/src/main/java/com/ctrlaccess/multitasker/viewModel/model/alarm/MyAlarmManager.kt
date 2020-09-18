@@ -7,7 +7,7 @@ import android.content.Intent
 import android.util.Log
 import com.ctrlaccess.multitasker.MainActivity
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
-import java.text.SimpleDateFormat
+import java.lang.Math.abs
 import java.util.*
 
 class MyAlarmManager(context: Context) {
@@ -19,31 +19,37 @@ class MyAlarmManager(context: Context) {
         Intent(context, AlarmBroadcastReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(context, 0, intent, 0)
         }
-    private val TAG = "MyAlarmManager"
+
+    private val TAG = "TAG"
+
 
     private fun getInterval(alarm: Alarm): Long {
         val rightNow = Calendar.getInstance()
         val rightNowDay = rightNow.get(Calendar.DAY_OF_WEEK)
 
-        val alarmDateTime = alarm.date?.timeInMillis ?: rightNow.timeInMillis
+        val alarmDateTime = alarm.calDate?.timeInMillis ?: rightNow.timeInMillis
+
+        Log.d(TAG, "alarm time:\t ${Date(alarmDateTime)}")
+        Log.d(TAG, "current time:\t ${Date()}")
 
         // selected days of the week
         val daysThisWeek = alarm.daysSelected()
 
         // past = alarm time is in the past, current time is greater or equal to alarm time
         if (rightNow.timeInMillis >= alarmDateTime) {
+
             Log.d(TAG, "alarm is in the past")
             var foundFutureDay = false
 
             if ((alarm.repeatMode > 0) and (daysThisWeek.size > 0)) {
                 daysThisWeek.forEach { day ->
                     // update calendar, if there are future days
-                    if ((day + 1) > rightNowDay) {
-                        val added = (day + 1) - rightNowDay
+                    if (day > rightNowDay) {
+                        val added = day - rightNowDay
 
                         // updated alarm calendar
 
-                        alarm.date?.add(Calendar.DAY_OF_WEEK, added)
+                        alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
                         foundFutureDay = true
                         return@forEach
                     }
@@ -67,39 +73,55 @@ class MyAlarmManager(context: Context) {
                         added = 28 - (rightNowDay - firstDay)
                     }
 
-                    alarm.date?.add(Calendar.DAY_OF_WEEK, added)
+                    alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
 
                 }
             } else {
                 // if alarm time is set in the past and no days are selected
                 // set alarm for the following day
-                if(alarm.daysSelected().size == 0){
-                    alarm.days.get(rightNowDay)
+                if (alarm.daysSelected().size == 0) {
+                    alarm.days.getThisDay(rightNowDay)
                 }
 
 
-                alarm.date?.add(Calendar.DAY_OF_WEEK, 1)
+                alarm.calDate?.add(Calendar.DAY_OF_WEEK, 1)
             }
         } else {
-            Log.d(TAG,"Alarm is in the future")
+            Log.d(TAG, "Alarm is in the future")
+
             if ((alarm.repeatMode > 0) and (daysThisWeek.size > 0)) {
-                val alarmDay = alarm.date?.get(Calendar.DAY_OF_WEEK) ?: 1
+
+                // day of alarm
+                val alarmDay = alarm.calDate?.get(Calendar.DAY_OF_WEEK) ?: 1
+
                 var alarmDayIsSelected = false
-                daysThisWeek.forEach { day ->
-                    val selectedDay = day + 1
-                    if (alarmDay == selectedDay) {
+
+                for ((index, day) in daysThisWeek.withIndex()) {
+                    if (alarmDay == day) {
+                        Log.d(TAG, "alarm day: $day and $alarmDay")
+                        val n = daysThisWeek.getOrNull(index + 1)
+                        if (n != null) {
+                            val added = abs(alarmDay - n)
+                            alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
+                        } else {
+                            alarmDayIsSelected = true
+                            break
+                        }
+                        alarmDayIsSelected = false
+                        break
+                    } else if (day > alarmDay) {
+                        Log.d(TAG, "Again, alarm day: $day and $alarmDay")
+
                         alarmDayIsSelected = true
-                        return@forEach
-                    } else if (selectedDay > alarmDay) {
-                        alarmDayIsSelected = true
-                        val added = selectedDay - alarmDay
-                        alarm.date?.add(Calendar.DAY_OF_WEEK, added)
-                        return@forEach
+                        val added = abs(day - alarmDay)
+                        alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
+                        break
                     }
                 }
 
-                if (!alarmDayIsSelected) {
-                    val firstDay = daysThisWeek[0] + 1
+
+                if (alarmDayIsSelected) {
+                    val firstDay = daysThisWeek[0]
                     var added = 0
                     // weekly repeat
                     if (alarm.repeatMode == 1) {
@@ -107,14 +129,14 @@ class MyAlarmManager(context: Context) {
 
                         // biweekly repeat
                     } else if (alarm.repeatMode == 2) {
-                        added = 14 - (rightNowDay - firstDay)
+                        added = 14 - kotlin.math.abs(rightNowDay - firstDay)
 
                         // monthly repeat
                     } else if (alarm.repeatMode == 3) {
-                        added = 28 - (rightNowDay - firstDay)
+                        added = 28 - kotlin.math.abs(rightNowDay - firstDay)
                     }
 
-                    alarm.date?.add(Calendar.DAY_OF_WEEK, added)
+                    alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
                 }
             }
         }
@@ -123,14 +145,14 @@ class MyAlarmManager(context: Context) {
         Log.d(
             TAG,
             "Day ${
-                Date(alarm.date?.timeInMillis ?: rightNow.timeInMillis)
+                Date(alarm.calDate?.timeInMillis ?: rightNow.timeInMillis)
             }"
         )
 
         // todo debug use only
         MainActivity.multitaskViewModel.updateAlarm(alarm)
 
-        return alarm.date?.timeInMillis ?: rightNow.timeInMillis
+        return alarm.calDate?.timeInMillis ?: rightNow.timeInMillis
     }
 
 

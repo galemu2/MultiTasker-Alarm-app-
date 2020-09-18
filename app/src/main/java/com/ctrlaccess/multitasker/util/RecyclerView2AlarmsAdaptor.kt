@@ -58,7 +58,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         currentAlarmOnOff(holder, currentAlarm)
         currentAlarmNote(holder.alarmNoteView, currentAlarm.alarmNote.toString())
         currentAlarmDaysOfWeek(holder, currentAlarm.days)
-        val alarmDate = currentAlarm.date ?: Calendar.getInstance()
+        val alarmDate = currentAlarm.calDate ?: Calendar.getInstance()
         holder.alarmDateView.text = Alarm.dateFormat(alarmDate)
         holder.alarmTimeView.text = getTime(currentAlarm)
         holder.alarmSpinnerRepeat.setSelection(currentAlarm.repeatMode)
@@ -214,18 +214,18 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                 set(Calendar.DAY_OF_MONTH, bindingDate.datePicker.dayOfMonth)
                 set(
                     Calendar.HOUR_OF_DAY,
-                    oldAlarms.date?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+                    oldAlarms.calDate?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
                         .get(Calendar.HOUR_OF_DAY)
                 )
                 set(
                     Calendar.MINUTE,
-                    oldAlarms.date?.get(Calendar.MINUTE) ?: Calendar.getInstance()
+                    oldAlarms.calDate?.get(Calendar.MINUTE) ?: Calendar.getInstance()
                         .get(Calendar.MINUTE)
                 )
                 set(Calendar.SECOND, 0)
             }
             Log.d(TAG, "set date: ${Date(date.timeInMillis)}")
-            oldAlarms.date = date
+            oldAlarms.calDate = date
             MainActivity.multitaskViewModel.updateAlarm(oldAlarms)
             notifyDataSetChanged()
             //dialog.dismiss()
@@ -253,15 +253,15 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             val dateTime = Calendar.getInstance().apply {
                 set(
                     Calendar.YEAR,
-                    oldAlarm.date?.get(Calendar.YEAR) ?: todayDate.get(Calendar.YEAR)
+                    oldAlarm.calDate?.get(Calendar.YEAR) ?: todayDate.get(Calendar.YEAR)
                 )
                 set(
                     Calendar.MONTH,
-                    oldAlarm.date?.get(Calendar.MONTH) ?: todayDate.get(Calendar.MONTH)
+                    oldAlarm.calDate?.get(Calendar.MONTH) ?: todayDate.get(Calendar.MONTH)
                 )
                 set(
                     Calendar.DAY_OF_MONTH,
-                    oldAlarm.date?.get(Calendar.DAY_OF_MONTH)
+                    oldAlarm.calDate?.get(Calendar.DAY_OF_MONTH)
                         ?: todayDate.get(Calendar.DAY_OF_MONTH)
                 )
                 set(Calendar.HOUR_OF_DAY, bindingAlarm.timePicker.currentHour)
@@ -269,7 +269,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                 set(Calendar.SECOND, 0)
             }
             Log.d(TAG  , "set time: "+Date(dateTime.timeInMillis).toString())
-            oldAlarm.date = dateTime
+            oldAlarm.calDate = dateTime
             MainActivity.multitaskViewModel.updateAlarm(oldAlarm)
             notifyDataSetChanged()
             dialog.dismiss()
@@ -290,9 +290,9 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
     }
 
     private fun getTime(alarm: Alarm): String {
-        val hr = alarm.date?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+        val hr = alarm.calDate?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
             .get(Calendar.HOUR_OF_DAY)
-        val min = alarm.date?.get(Calendar.MINUTE) ?: Calendar.getInstance().get(Calendar.MINUTE)
+        val min = alarm.calDate?.get(Calendar.MINUTE) ?: Calendar.getInstance().get(Calendar.MINUTE)
         val time = Time(hr, min, 0)
         val formatter = SimpleDateFormat("hh:mm a")
         return formatter.format(time)

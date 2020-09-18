@@ -18,7 +18,7 @@ data class DaysOfWeek(
     @Ignore
     val checkedDays = arrayOf(sun, mon, tue, wed, thurs, fri, sat)
 
-    fun get(day: Int) {
+    fun getThisDay(day: Int) {
         when (day) {
             1 -> this.sun
             2 -> this.mon
