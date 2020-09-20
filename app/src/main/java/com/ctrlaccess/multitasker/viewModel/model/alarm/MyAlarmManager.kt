@@ -7,7 +7,6 @@ import android.content.Intent
 import android.util.Log
 import com.ctrlaccess.multitasker.MainActivity
 import com.ctrlaccess.multitasker.viewModel.entities.Alarm
-import java.lang.Math.abs
 import java.util.*
 
 class MyAlarmManager(context: Context) {
@@ -36,13 +35,24 @@ class MyAlarmManager(context: Context) {
         val daysThisWeek = alarm.daysSelected()
 
         // past = alarm time is in the past, current time is greater or equal to alarm time
-        if (rightNow.timeInMillis >= alarmDateTime) {
+        // todo this may be the future part
+        if (rightNow.timeInMillis  <= alarmDateTime) {
 
-            Log.d(TAG, "alarm is in the past")
+            Log.d(TAG, "alarm is in the future")
             var foundFutureDay = false
 
             if ((alarm.repeatMode > 0) and (daysThisWeek.size > 0)) {
-                daysThisWeek.forEach { day ->
+
+
+                for ((index, day) in daysThisWeek.withIndex()) {
+                    if (day == rightNowDay) {
+                        val n = daysThisWeek.getOrNull(index + 1)
+                        if (n != null) {
+                            val added = kotlin.math.abs(rightNowDay - n)
+                            alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
+                        }
+                        break
+                    }
                     // update calendar, if there are future days
                     if (day > rightNowDay) {
                         val added = day - rightNowDay
@@ -51,14 +61,14 @@ class MyAlarmManager(context: Context) {
 
                         alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
                         foundFutureDay = true
-                        return@forEach
+                        break
                     }
                 }
 
                 // there are no future days
-                if (!foundFutureDay) {
+                if (foundFutureDay) {
 
-                    val firstDay = daysThisWeek[0] + 1
+                    val firstDay = daysThisWeek[0]
                     var added = 0
                     // weekly repeat
                     if (alarm.repeatMode == 1) {
@@ -83,11 +93,10 @@ class MyAlarmManager(context: Context) {
                     alarm.days.getThisDay(rightNowDay)
                 }
 
-
                 alarm.calDate?.add(Calendar.DAY_OF_WEEK, 1)
             }
         } else {
-            Log.d(TAG, "Alarm is in the future")
+            Log.d(TAG, "Alarm is in the past")
 
             if ((alarm.repeatMode > 0) and (daysThisWeek.size > 0)) {
 
@@ -98,10 +107,9 @@ class MyAlarmManager(context: Context) {
 
                 for ((index, day) in daysThisWeek.withIndex()) {
                     if (alarmDay == day) {
-                        Log.d(TAG, "alarm day: $day and $alarmDay")
                         val n = daysThisWeek.getOrNull(index + 1)
                         if (n != null) {
-                            val added = abs(alarmDay - n)
+                            val added = kotlin.math.abs(alarmDay - n)
                             alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
                         } else {
                             alarmDayIsSelected = true
@@ -113,12 +121,11 @@ class MyAlarmManager(context: Context) {
                         Log.d(TAG, "Again, alarm day: $day and $alarmDay")
 
                         alarmDayIsSelected = true
-                        val added = abs(day - alarmDay)
+                        val added = kotlin.math.abs(day - alarmDay)
                         alarm.calDate?.add(Calendar.DAY_OF_WEEK, added)
                         break
                     }
                 }
-
 
                 if (alarmDayIsSelected) {
                     val firstDay = daysThisWeek[0]
@@ -140,7 +147,6 @@ class MyAlarmManager(context: Context) {
                 }
             }
         }
-
 
         Log.d(
             TAG,
