@@ -150,6 +150,18 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                     if (position != tmpPos) {
                         currentAlarm.repeatMode = position
                         tmpPos = position
+                        if (position == 0) { // check box is set to single
+                            holder.checkedDays.forEachIndexed { index, checkBox ->
+                                if (checkBox.isChecked) {
+                                    checkBox.isChecked = false
+                                }
+                                checkBox.isClickable = false
+                            }
+                        } else {
+                            holder.checkedDays.forEach { checkBox ->
+                                checkBox.isClickable = true
+                            }
+                        }
                         MainActivity.multitaskViewModel.updateAlarm(currentAlarm)
                         notifyDataSetChanged()
                     }
@@ -191,7 +203,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                     R.color.alarm_is_on
                 )
             )
-         } else {
+        } else {
             holder.container.setBackgroundColor(
                 holder.container.context.resources.getColor(
                     R.color.alarm_is_off
@@ -208,18 +220,19 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
 
         builder.setPositiveButton(R.string.update) { dialog, which ->
             val oldAlarms = Fragment2Alarms.alarms[position]
+            val todayDate = Calendar.getInstance()
             val date = Calendar.getInstance().apply {
                 set(Calendar.YEAR, bindingDate.datePicker.year)
                 set(Calendar.MONTH, bindingDate.datePicker.month)
                 set(Calendar.DAY_OF_MONTH, bindingDate.datePicker.dayOfMonth)
                 set(
                     Calendar.HOUR_OF_DAY,
-                    oldAlarms.calDate?.get(Calendar.HOUR_OF_DAY) ?: Calendar.getInstance()
+                    oldAlarms.calDate?.get(Calendar.HOUR_OF_DAY) ?: todayDate
                         .get(Calendar.HOUR_OF_DAY)
                 )
                 set(
                     Calendar.MINUTE,
-                    oldAlarms.calDate?.get(Calendar.MINUTE) ?: Calendar.getInstance()
+                    oldAlarms.calDate?.get(Calendar.MINUTE) ?: todayDate
                         .get(Calendar.MINUTE)
                 )
                 set(Calendar.SECOND, 0)
@@ -228,7 +241,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
             oldAlarms.calDate = date
             MainActivity.multitaskViewModel.updateAlarm(oldAlarms)
             notifyDataSetChanged()
-            //dialog.dismiss()
+            dialog.dismiss()
         }
 
         builder.setNegativeButton(R.string.cancel_create) { dialog, which ->
@@ -268,7 +281,7 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
                 set(Calendar.MINUTE, bindingAlarm.timePicker.currentMinute)
                 set(Calendar.SECOND, 0)
             }
-            Log.d(TAG  , "set time: "+Date(dateTime.timeInMillis).toString())
+            Log.d(TAG, "set time: " + Date(dateTime.timeInMillis).toString())
             oldAlarm.calDate = dateTime
             MainActivity.multitaskViewModel.updateAlarm(oldAlarm)
             notifyDataSetChanged()
@@ -325,6 +338,10 @@ class RecyclerView2AlarmsAdaptor(context: Context) :
         val checkBoxFriday: CheckBox = itemView.findViewById(R.id.checkBoxFriday)
         val checkBoxSaturday: CheckBox = itemView.findViewById(R.id.checkBoxSaturday)
 
+        val checkedDays = arrayOf(
+            checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, checkBoxThursday,
+            checkBoxFriday, checkBoxSaturday
+        )
 
         val container: ConstraintLayout = itemView.findViewById(R.id.constraint1_element_alarm)
     }

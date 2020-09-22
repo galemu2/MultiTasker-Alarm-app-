@@ -64,7 +64,7 @@ data class Alarm(
                 selectedDays.add(index + 1)
             }
         }
-        Log.d(TAG, "selected days: "+selectedDays.toString())
+        Log.d(TAG, "selected days: $selectedDays")
         return selectedDays
     }
 }
