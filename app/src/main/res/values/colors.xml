@@ -21,6 +21,7 @@
     <color name="element_schedule_title">#D8C946</color>
     <color name="element_schedule_note">#46EE4D</color>
     <color name="element_schedule_alarms">#2196F3</color>
+    <color name="textClockColor" >#0F3CBA</color>
 
 
 </resources>

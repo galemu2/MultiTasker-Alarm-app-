@@ -11,11 +11,17 @@ import java.util.*
 
 class MyAlarmManager(context: Context) {
 
+    companion object {
+        val AlarmKey = "alarm key"
+        val ThisAlarm = "this is an alarm"
+    }
+
     private var alarmManager: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     private var alarmIntent: PendingIntent =
         Intent(context, AlarmBroadcastReceiver::class.java).let { intent ->
+            intent.putExtra(AlarmKey, ThisAlarm)
             PendingIntent.getBroadcast(context, 0, intent, 0)
         }
 
@@ -42,7 +48,6 @@ class MyAlarmManager(context: Context) {
 
 
         if ((alarm.calDate?.timeInMillis ?: rightNow.timeInMillis) >= rightNow.timeInMillis) {
-            Log.d(TAG, "alarm time is in the future")
 
             val alarmDaySelected = alarm.days.getThisDay(alarmDay)
 
@@ -53,7 +58,7 @@ class MyAlarmManager(context: Context) {
                 var noMoreDays = true
 
                 for ((index, b) in alarm.days.checkedDays.withIndex()) {
-                    val idx = index +1
+                    val idx = index + 1
                     if (b and (idx > alarmDay)) {
                         // alarm is set to next selected day
                         alarm.calDate?.apply {
@@ -87,17 +92,11 @@ class MyAlarmManager(context: Context) {
             }
 
 
-
-
-
-
-
         } else {
-            Log.d(TAG, "alarm time has passed")
-            var noMoreDays = true
+             var noMoreDays = true
 
             for ((index, b) in alarm.days.checkedDays.withIndex()) {
-                val idx = index  + 1
+                val idx = index + 1
                 if (b and (idx > alarmDay)) {
                     alarm.calDate?.apply {
                         set(Calendar.DAY_OF_WEEK, idx)
@@ -145,7 +144,7 @@ class MyAlarmManager(context: Context) {
     }
 
 
-    fun serRepeatingAlarm(alarm: Alarm) {
+    fun setRepeatingAlarm(alarm: Alarm) {
 
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,

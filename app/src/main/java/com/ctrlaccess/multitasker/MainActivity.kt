@@ -1,7 +1,6 @@
 package com.ctrlaccess.multitasker
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -136,7 +135,7 @@ class MainActivity : AppCompatActivity(), ToolbarTitleChangeListener {
                     allAlarms?.forEach { alarm ->
                         // set alarms manager for each alarm
                         // todo cancel other alarms and reschedule
-                         myAlarmManager.serRepeatingAlarm(alarm)
+                         myAlarmManager.setRepeatingAlarm(alarm)
 
                     }
                 }
